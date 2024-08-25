@@ -6,6 +6,9 @@ def reads(path: str) -> str:
 def writes(path: str, data: str) -> bool:
     return KernelSpace.syscall("ext.fs.kfs", "writes", path, data)
 
+def appends(path: str, data: str) -> bool:
+    return KernelSpace.syscall("ext.fs.kfs", "appends", path, data)
+
 def isFile(path: str) -> bool:
     return KernelSpace.syscall("ext.fs.kfs", "isFile", path)
 

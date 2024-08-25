@@ -44,6 +44,14 @@ def writes(path: str, content: str) -> bool:
         f.write(content)
     return True
 
+def appends(path: str, content: str) -> bool:
+    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+        raise Exception("Access denied.")
+    path = os.path.abspath(f"{os.getcwd()}/{path}")
+    with open(path, 'a') as f:
+        f.write(content)
+    return True
+
 def isFile(path: str) -> bool:
     if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
         raise Exception("Access denied.")
