@@ -1,0 +1,18 @@
+{
+    "Bundle": "KyneOS:Extension:1.0",
+    "DisplayName": "AuthMan System Interface",
+    "ProcessName": "authman",
+    "Description": "",
+    "Attributes": {
+        "Priority": 0,
+        "Type": "ext",
+        "Class": "kyne",
+        "Id": "authman",
+        "Name": "AuthMan",
+        "Version": "1.0",
+        "Distro": "Universal"
+    },
+    "Runtime": {
+        "SupportedArchitecture": ["arm64", "amd64"]
+    }
+}

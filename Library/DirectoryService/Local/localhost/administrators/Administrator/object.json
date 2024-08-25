@@ -1,0 +1,16 @@
+{
+    "type": "LO",
+    "lo.type": "User",
+    "lo.username": "Administrator",
+    "lo.name": "Administrator",
+    "lo.label": "Administrator",
+    "lo.location": "sys",
+    "lo.description": "System administrator",
+    "lo.authorization": {
+        "AuthManHash": "",
+        "AuthManPK": "",
+        "LogonEnabled": false
+    },
+    "lo.permissionId": 0,
+    "lo.home": "/Library/Administrator"
+}

@@ -1,0 +1,4 @@
+pycryptodome
+requests
+bcrypt
+pynput

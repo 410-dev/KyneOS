@@ -1,0 +1,16 @@
+{
+    "type": "LO",
+    "lo.type": "User",
+    "lo.username": "KERNEL_USER",
+    "lo.name": "KERNEL_USER",
+    "lo.label": "KERNEL_USER",
+    "lo.location": "sys",
+    "lo.description": "Kernel dummy user",
+    "lo.authorization": {
+        "AuthManHash": "",
+        "AuthManPK": "",
+        "LogonEnabled": false
+    },
+    "lo.permissionId": 0,
+    "lo.home": "/System/Library"
+}

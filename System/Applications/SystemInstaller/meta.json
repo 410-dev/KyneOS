@@ -1,0 +1,10 @@
+{
+    "Bundle": "KyneOS:Application:1.0",
+    "Application": {
+        "DisplayName": "SystemInstaller",
+        "ProcessName": "sysinstall"
+    },
+    "Runtime": {
+        "SupportedArchitecture": ["arm64", "amd64"]
+    }
+}

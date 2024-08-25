@@ -1,0 +1,18 @@
+{
+    "Bundle": "KyneOS:Service:1.0",
+    "DisplayName": "NethMan Domain Controller Service",
+    "ProcessName": "nethmandcs",
+    "Description": "Central user interface",
+    "Attributes": {
+        "Priority": 0,
+        "Type": "svc",
+        "Class": "kyne-server",
+        "Id": "nethman-interface",
+        "Name": "NethMan Interface",
+        "Version": "1.0",
+        "Distro": "Server"
+    },
+    "Runtime": {
+        "SupportedArchitecture": ["arm64", "amd64"]
+    }
+}

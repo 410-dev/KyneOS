@@ -1,0 +1,18 @@
+{
+    "Bundle": "KyneOS:Service:1.0",
+    "DisplayName": "UI",
+    "ProcessName": "UI",
+    "Description": "Central user interface",
+    "Attributes": {
+        "Priority": 0,
+        "Type": "svc",
+        "Class": "kyne",
+        "Id": "ui",
+        "Name": "SystemUI",
+        "Version": "1.0",
+        "Distro": "Universal"
+    },
+    "Runtime": {
+        "SupportedArchitecture": ["arm64", "amd64"]
+    }
+}

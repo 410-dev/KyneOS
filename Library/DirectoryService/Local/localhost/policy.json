@@ -1,0 +1,16 @@
+{
+    "SystemAdministration.Security.Password.Complexity.Enabled": false,
+    "SystemAdministration.Security.Password.Complexity.MinimumLength": 8,
+    "SystemAdministration.Security.Password.Complexity.MinimumNumeric": 1,
+    "SystemAdministration.Security.Password.Complexity.MinimumSpecial": 1,
+    "SystemAdministration.Security.Password.Complexity.MinimumUppercase": 1,
+    "SystemAdministration.Security.Password.Complexity.MinimumLowercase": 1,
+    "SystemAdministration.Security.Password.Complexity.DisallowUsername": true,
+    "SystemAdministration.Security.Password.Complexity.DisallowPasswordReuse": true,
+    "SystemAdministration.Security.Password.Expiry.Enabled": false,
+    "SystemAdministration.Security.Password.Expiry.TimeSet": 1724496348,
+    "SystemAdministration.Security.Password.Expiry.ExpireAfterDays": 90,
+    "SystemAdministration.Security.Password.Expiry.WarnBeforeDays": 7,
+    "SystemAdministration.Security.AuthMan.RemoteLogin.Enabled": true,
+    "SystemAdministration.Security.AuthMan.RemoteLogin.ChallengeTimeLiveSeconds": 60
+}
