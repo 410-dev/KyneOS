@@ -14,7 +14,7 @@ async def mainAsync(args: list, process):
     process.assignedTTY = 2
     KernelSpace.syscall("drv.io.tty", "switchTTY", 2, True)
 
-    stdio.println("KyneOS User Interface")
+    stdio.println("KyneOS Logon Interface")
 
     while (not doTerminate) and process.isRunning:
         try:
