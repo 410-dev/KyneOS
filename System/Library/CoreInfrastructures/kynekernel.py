@@ -48,6 +48,8 @@ def init(args: list):
     jPrint("Loading preload components for next process...")
     preloadList: list[tuple[str, bool]] = [
         ("/System/Library/CoreInfrastructures/Extensions/kfs.py", False),
+        ("/System/Library/CoreInfrastructures/Extensions/directories.py", False),
+        ("/System/Library/CoreInfrastructures/Drivers/tty.py", False),
         ("/System/Library/CoreInfrastructures/Drivers/stdout.py", False),
     ]
     for preload in preloadList:
