@@ -41,6 +41,8 @@ class DSObject:
             f"{DSObject.TYPES[key].lower()}.location": location,
             f"{DSObject.TYPES[key].lower()}.description": description,
             f"{DSObject.TYPES[key].lower()}.home": f"/Users/{username}",
+            f"{DSObject.TYPES[key].lower()}.ui": "KyneUI",
+            f"{DSObject.TYPES[key].lower()}.shell": "$default",
             f"{DSObject.TYPES[key].lower()}.authorization": {
                 "AuthManHash": authManHash,
                 "AuthManPK": authManPK
