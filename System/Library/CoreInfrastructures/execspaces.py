@@ -108,7 +108,7 @@ class KernelSpace:
             for field in requiredFields:
                 if not bundle.getAttributeOf(field):
                     raise Exception(f"Field {field} is required in bundle attribute.")
-                ksObjData[field] = bundle.getAttributeOf(field)
+                ksObjData[field.lower()] = bundle.getAttributeOf(field)
 
         ksObjId = f"{ksObjData.get('type')}.{ksObjData.get('class')}.{ksObjData.get('id')}"
 
