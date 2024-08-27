@@ -61,10 +61,14 @@ def init(args: list):
             jPrint("  KernelSpace failed to load the preload components.")
             sys.exit(1)
         jPrint(f"     OK: {preload[0]}")
-
     global preloadInitialized
     preloadInitialized = True
     jPrint("Preload components loaded.")
+
+    if "--dont-clean-tmp" not in args:
+        jPrint("Cleaning temporary files...")
+        fs.remove("/tmp")
+        fs.makeDir("/tmp")
 
     # Load
     jPrint("Enumerating kernel extensions...")
