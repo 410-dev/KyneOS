@@ -1,4 +1,5 @@
 import json
+import os.path
 
 import System.Library.Security.APIAccessControls as APIAccessControls
 import System.fs as fs
@@ -52,7 +53,13 @@ def createObject(path: str, objectData: dict) -> bool:
     if path.startswith("/"):
         path = path[1:]
     pathFull = f"/Library/DirectoryService/{path}/object.json"
-    # fs.makeDir(f"/Library/DirectoryService/{path}")
+
+    if not fs.isDir(f"/Library/DirectoryService/{path}"):
+        if not fs.isDir(f"/Library/DirectoryService/{os.path.dirname(path)}"):
+            raise FileNotFoundError(f"Directory not found: {os.path.dirname(path)}")
+        else:
+            fs.makeDir(f"/Library/DirectoryService/{path}")
+
     fs.writes(pathFull, json.dumps(objectData))
 
     if objectData.get("type") == "LO" and objectData.get("lo.type") == "User":
