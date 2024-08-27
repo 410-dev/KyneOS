@@ -52,7 +52,15 @@ def createObject(path: str, objectData: dict) -> bool:
     if path.startswith("/"):
         path = path[1:]
     pathFull = f"/Library/DirectoryService/{path}/object.json"
+    # fs.makeDir(f"/Library/DirectoryService/{path}")
     fs.writes(pathFull, json.dumps(objectData))
+
+    if objectData.get("type") == "LO" and objectData.get("lo.type") == "User":
+        dsObj = DSObject(path, objectData)
+        dc: DSObject = dsObj.getParentObject("DC")
+        dc.getAttribute("dc.usernames").append(f"{objectData.get('lo.username')}@{dc.getAttribute('dc.domain')}:{path}")
+        dc.save()
+
     return True
 
 def createObjectExternalAttribute(path: str, key: str, value) -> bool:
