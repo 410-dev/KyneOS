@@ -1,5 +1,6 @@
 import datetime
-import sys
+import time
+
 import System.stdio as stdio
 import System.fs as fs
 import System.Library.CoreInfrastructures.Enumerator.KernelSpaceLoadables as LoadableEnumerator
@@ -107,7 +108,7 @@ def main(args: list[str], process: Process):
             except Exception as e:
                 jPrint(f"  Error: {item}: {e}")
                 jPrint("  KernelSpace failed to load the system components.")
-                sys.exit(1)
+                return 1
             jPrint(f"       OK: {item}")
 
     jPrint("Loading system services:")
@@ -118,7 +119,20 @@ def main(args: list[str], process: Process):
         except Exception as e:
             jPrint(f"   Error: {bind}: {e}")
             jPrint("  KernelSpace failed to load the system components.")
-            sys.exit(1)
+            return 1
         jPrint(f"        OK: {bind}")
 
+    for drvStr in KernelSpace.loaded.keys():
+        module = KernelSpace.loaded[drvStr]["exec"]
+        if hasattr(module, "run"):
+            try:
+                module.run()
+            except Exception as e:
+                jPrint(f"Error in running {drvStr}: {e}")
+                return 1
+
+    while process.isRunning:
+        time.sleep(0.5)
+        continue
     return 0
+
