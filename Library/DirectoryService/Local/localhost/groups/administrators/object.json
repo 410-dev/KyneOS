@@ -1,7 +1,6 @@
 {
     "type": "LO",
-    "lo.type": "User",
-    "lo.username": "Administrator",
+    "lo.type": "UserGroup",
     "lo.name": "Administrator",
     "lo.label": "Administrator",
     "lo.location": "sys",
@@ -11,6 +10,5 @@
         "AuthManPK": "",
         "LogonEnabled": false
     },
-    "lo.permissionId": 0,
-    "lo.home": "/Library/Administrator"
+    "lo.permissionId": 0
 }

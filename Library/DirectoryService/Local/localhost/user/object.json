@@ -1,0 +1,16 @@
+{
+    "type": "LO",
+    "lo.type": "User",
+    "lo.username": "user",
+    "lo.name": "user",
+    "lo.label": "user",
+    "lo.location": "Local",
+    "lo.description": "KyneOS default user",
+    "lo.authorization": {
+        "AuthManHash": "",
+        "AuthManPK": "",
+        "LogonEnabled": true
+    },
+    "lo.permissionId": 0,
+    "lo.home": "/Users/user"
+}
