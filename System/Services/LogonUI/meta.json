@@ -1,14 +1,14 @@
 {
     "Bundle": "KyneOS:Service:1.0",
-    "DisplayName": "UI",
-    "ProcessName": "UI",
-    "Description": "Central user interface",
+    "DisplayName": "LogonUI",
+    "ProcessName": "LogonUI",
+    "Description": "Logon user interface",
     "Attributes": {
         "Priority": 0,
         "Type": "svc",
         "Class": "kyne",
-        "Id": "ui",
-        "Name": "SystemUI",
+        "Id": "logon-ui",
+        "Name": "LogonUI",
         "Version": "1.0",
         "Distro": "Universal"
     },
