@@ -23,7 +23,7 @@ currentDisplayTTY = 1
 
 scanfQueue: dict[int, bool] = {}
 
-def switchTTY(tty: int):
+def switchTTY(tty: int, silent: bool = False):
     global currentDisplayTTY
     currentDisplayTTY = tty
     from System.Library.CoreInfrastructures.execspaces import KernelSpace
@@ -31,8 +31,10 @@ def switchTTY(tty: int):
         fs.makeDir(f"/tmp/")
         fs.writes(f"/tmp/tty{tty}.log", "")
     KernelSpace.syscall("ext.vhardware.stddisplay", "clear")
-    println(f"Switched to TTY {tty}", tty=tty, dontLeaveLog=True)
-    print(fs.reads(f"/tmp/tty{tty}.log"))
+    if not silent:
+        println(f"Switched to TTY {tty}", tty=tty, dontLeaveLog=True)
+    if fs.isFile(f"/tmp/tty{tty}.log"):
+        print(fs.reads(f"/tmp/tty{tty}.log"))
 
 def scanf(tty: int = -1) -> str:
     global scanfQueue
