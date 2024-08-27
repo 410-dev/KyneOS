@@ -4,7 +4,7 @@
     "ProcessName": "authman",
     "Description": "",
     "Attributes": {
-        "Priority": 0,
+        "Priority": 500,
         "Type": "ext",
         "Class": "kyne",
         "Id": "authman",
