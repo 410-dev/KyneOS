@@ -1,2 +1,2 @@
-async def mainAsync(args: list, process):
+def main(args: list, process):
     pass
