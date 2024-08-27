@@ -1,3 +1,10 @@
+import asyncio
+import threading
+from pynput import keyboard
+
+import System.stdio as stdio
+from System.Library.CoreInfrastructures.execspaces import KernelSpace
+
 def DECLARATION() -> dict:
     return {
         "type": "drv",  # 3 letter type: ext, drv, svc
@@ -15,20 +22,35 @@ def DECLARATION() -> dict:
         ]
     }
 
-import asyncio
-import threading
-from pynput import keyboard
 
 listener = None
 
+# TODO Convert this to event handler
 async def mainAsync(args: list, process):
     current = set()
+    ttySwitchs: dict[int, set] = {
+        1: {keyboard.Key.shift, keyboard.Key.f1},
+        2: {keyboard.Key.shift, keyboard.Key.f2},
+        3: {keyboard.Key.shift, keyboard.Key.f3},
+        4: {keyboard.Key.shift, keyboard.Key.f4},
+        5: {keyboard.Key.shift, keyboard.Key.f5},
+        6: {keyboard.Key.shift, keyboard.Key.f6},
+        7: {keyboard.Key.shift, keyboard.Key.f7},
+        8: {keyboard.Key.shift, keyboard.Key.f8},
+        9: {keyboard.Key.shift, keyboard.Key.f9}
+    }
     def on_press(key):
-        SwitchTTYF2 = {keyboard.Key.shift, keyboard.Key.f2}
-        if key in SwitchTTYF2:
-            current.add(key)
-            if all(k in current for k in SwitchTTYF2):
-                print('TTY should switch now!!!')
+        # if key in SwitchTTYF2:
+        #     current.add(key)
+        #     if all(k in current for k in SwitchTTYF2):
+        #         stdio.println("Switching to TTY 2")
+        #         KernelSpace.syscall("drv.io.tty", "switchTTY", 1)
+        for tty, switchKeys in ttySwitchs.items():
+            if key in switchKeys:
+                current.add(key)
+                if all(k in current for k in switchKeys):
+                    stdio.println(f"Switching to TTY {tty}")
+                    KernelSpace.syscall("drv.io.tty", "switchTTY", tty)
         if key == keyboard.Key.esc:
             asyncio.run(terminateAsync(0))
 

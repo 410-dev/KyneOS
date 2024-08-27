@@ -29,6 +29,9 @@ class Process:
         self.launchedSync: bool = False
         self.isRunning: bool = False
 
+        self.assignedTTY: int = 1
+        self.assignedTTY: int = self.ownerProcess.assignedTTY if self.ownerProcess else 1
+
         # Display the process creation details
         if self.ownerProcess:
             print(f"Process '{self.name}' created. Owned by: '{self.ownerProcess.name}'")

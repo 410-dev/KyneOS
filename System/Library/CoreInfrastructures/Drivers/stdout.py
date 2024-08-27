@@ -1,3 +1,5 @@
+from System.Library.CoreInfrastructures.execspaces import KernelSpace
+
 def DECLARATION() -> dict:
     return {
         "type": "drv",  # 3 letter type: ext, drv, svc
@@ -9,11 +11,11 @@ def DECLARATION() -> dict:
         "author": "LKS410",
         "license": "MIT",
         "distro": "Universal",
-        "priority": 0,
+        "priority": 1000,
         "functions": [
             "println(str,str):None",
         ]
     }
 
 def println(content: str, end: str = "\n", tty: int = -1):
-    print(content, end=end)
+    KernelSpace.syscall("drv.io.tty", "println", content, end, tty)
