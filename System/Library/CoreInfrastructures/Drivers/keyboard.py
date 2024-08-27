@@ -26,7 +26,7 @@ def DECLARATION() -> dict:
 listener = None
 
 # TODO Convert this to event handler
-async def mainAsync(args: list, process):
+async def mainAsync(args: list):
     current = set()
     ttySwitchs: dict[int, set] = {
         1: {keyboard.Key.shift, keyboard.Key.f1},
@@ -40,11 +40,6 @@ async def mainAsync(args: list, process):
         9: {keyboard.Key.shift, keyboard.Key.f9}
     }
     def on_press(key):
-        # if key in SwitchTTYF2:
-        #     current.add(key)
-        #     if all(k in current for k in SwitchTTYF2):
-        #         stdio.println("Switching to TTY 2")
-        #         KernelSpace.syscall("drv.io.tty", "switchTTY", 1)
         for tty, switchKeys in ttySwitchs.items():
             if key in switchKeys:
                 current.add(key)
@@ -69,5 +64,6 @@ async def terminateAsync(code: int):
     global listener
     listener.stop()
 
-threading.Thread(target=asyncio.run, args=(mainAsync([], None),)).start()
+def run():
+    threading.Thread(target=asyncio.run, args=(mainAsync([]),)).start()
 
