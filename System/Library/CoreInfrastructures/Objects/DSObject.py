@@ -49,7 +49,11 @@ class DSObject:
     def getChildObject(self, path: str) -> "DSObject":
         return KernelSpace.syscall("ext.directory.dsparser", "getObject", f"{self.path}/{path}")
 
-    def getParentObject(self) -> "DSObject":
+    def getParentObject(self, objectType: str = None) -> "DSObject":
+        if objectType:
+            for parent in self.parentsObject:
+                if parent.getType() == objectType:
+                    return parent
         return KernelSpace.syscall("ext.directory.dsparser", "getObject", os.path.dirname(self.path))
 
     def getAttribute(self, key: str):
