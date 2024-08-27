@@ -81,7 +81,10 @@ def remove(path: str) -> bool:
     if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
         raise Exception("Access denied.")
     path = os.path.abspath(f"{os.getcwd()}/{path}")
-    os.remove(path)
+    if os.path.isdir(path):
+        shutil.rmtree(path)
+    else:
+        os.remove(path)
     return True
 
 def copy(src: str, dest: str) -> bool:
