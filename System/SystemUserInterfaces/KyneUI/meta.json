@@ -1,0 +1,18 @@
+{
+    "Bundle": "KyneOS:Application:1.0",
+    "DisplayName": "",
+    "ProcessName": "KyneUI",
+    "Description": "Central user interface",
+    "Attributes": {
+        "Priority": 0,
+        "Type": "app",
+        "Class": "kyne",
+        "Id": "ui",
+        "Name": "KyneUI",
+        "Version": "1.0",
+        "Distro": "Universal"
+    },
+    "Runtime": {
+        "SupportedArchitecture": ["arm64", "amd64"]
+    }
+}
