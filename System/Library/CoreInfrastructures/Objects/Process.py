@@ -7,6 +7,10 @@ import os
 import inspect
 import System.Library.CoreInfrastructures.journaling as Journaling
 from typing import Any, Callable
+
+from System.Library.CoreInfrastructures.execspaces import KernelSpace, UserSpace
+
+
 # from system.kernel.v100.modules import process as process_module
 
 
@@ -139,6 +143,7 @@ class Process:
     def processEnd(self, exitCode: int) -> None:
         self.isRunning = False
         Journaling.record("INFO", f"Process terminated with exit code: {exitCode}")
+        UserSpace.processes.pop(self.pid)
         # Add any additional cleanup or notification logic here
 
 
