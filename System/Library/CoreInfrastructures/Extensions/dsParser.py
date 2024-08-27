@@ -32,7 +32,7 @@ def getObject(path: str) -> DSObject | None:
     else:
         return None
 
-def getObjectExtneralAttribute(path: str, key: str) -> dict:
+def getObjectExternalAttribute(path: str, key: str) -> dict:
     if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures"):
         raise Exception("Access denied.")
 
