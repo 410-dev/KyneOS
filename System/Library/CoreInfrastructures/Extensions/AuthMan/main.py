@@ -35,6 +35,9 @@ def validateUser(username: str, password: str, forest: str, domain: str, directo
         if not user.getAttribute("authorization")["AuthManHash"] == authManHash:
             return False, "Invalid username or password.", None
 
+        if "LogonEnabled" in user.getAttribute("authorization") and not user.getAttribute("authorization")["LogonEnabled"]:
+            return False, "User account is disabled", None
+
         return True, "Validation successful.", user
 
     # Use public key for validation if remote
