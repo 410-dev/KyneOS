@@ -57,6 +57,15 @@ class Process:
         # If no Process instance is found, return self (Kernel Process)
         return self
 
+    def getChildrenProcesses(self) -> list["Process"]:
+        from System.Library.CoreInfrastructures.execspaces import UserSpace
+        children = []
+        for pid, process in UserSpace.processes.items():
+            if process.ownerProcess.pid == self.pid and process.pid != self.pid:
+                children.append(process)
+                children.extend(process.getChildrenProcesses())
+        return children
+
     def _load_module(self):
         self.module = importlib.reload(importlib.import_module(self.executableModule))
 
@@ -84,6 +93,16 @@ class Process:
                     Journaling.record("ERROR", f"Error in sync termination: {e}")
             else:
                 Journaling.record("INFO", f"No terminate method found for sync process.")
+
+
+        children: list["Process"] = self.getChildrenProcesses()
+        for childProcess in children:
+            print("Killing child process:", childProcess.pid)
+            try:
+                if childProcess.pid != self.pid:
+                    childProcess.kill(code)
+            except Exception as e:
+                Journaling.record("ERROR", f"Error in killing child process: {e}")
 
         self.isRunning = False
 
