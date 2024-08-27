@@ -1,5 +1,8 @@
+import asyncio
 import sys
 import datetime
+import threading
+
 import System.stdio as stdio
 import System.fs as fs
 
@@ -172,11 +175,30 @@ def init(args: list):
             sys.exit(1)
         jPrint(f"        OK: {bind}")
 
-    # from System.Library.CoreInfrastructures.Objects.DSObject import DSObject
-    # dobj = DSObject("/Example/google.com/Human Resources/HR Managers")
-    # jPrint(dobj.getName())
-    # jPrint(dobj.__str__())
-
     initProcess: Process = Process("init", "/System/Library/initsys.py", args, KernelSpace._kernelUser)
     args = [timeOfBoot] + args
     initProcess.launchSync(args)
+
+    for loadedKernelComponents in KernelSpace.loaded:
+        jPrint(f"Unloading: {loadedKernelComponents}")
+        module = KernelSpace.loaded[loadedKernelComponents]["exec"]
+        if hasattr(module, "terminate"):
+            try:
+                jPrint("  Terminating...")
+                module.terminate(0)
+            except Exception as e:
+                jPrint(f"  Error: {loadedKernelComponents}: {e}")
+                jPrint("  KernelSpace failed to terminate the kernel components.")
+                sys.exit(1)
+        if hasattr(module, "terminateAsync"):
+            try:
+                jPrint("  Terminating async...")
+                threading.Thread(target=asyncio.run, args=(module.terminateAsync(0),)).start()
+            except Exception as e:
+                jPrint(f"  Error: {loadedKernelComponents}: {e}")
+                jPrint("  KernelSpace failed to terminate the kernel components.")
+                sys.exit(1)
+
+        jPrint(f"     OK: {loadedKernelComponents}")
+    jPrint("Kernel components unloaded.")
+    jPrint("Kernel shutdown complete.")
