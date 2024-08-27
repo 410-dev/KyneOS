@@ -5,3 +5,6 @@ def printf(string: str, end: str = ""):
 
 def println(string: str):
     KernelSpace.syscall("drv.io.stdout", "println", string)
+
+def scanf() -> str:
+    return KernelSpace.syscall("drv.io.stdin", "scan")
