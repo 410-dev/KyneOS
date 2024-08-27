@@ -19,6 +19,8 @@ class DSObject:
         self.objectData = objectData
         if objectData is None:
             dobj: "DSObject" = KernelSpace.syscall("ext.directory.dsparser", "getObject", path)
+            if dobj is None:
+                raise FileNotFoundError(f"Object not found at path: {path}")
             self.objectData = dobj.objectData
         self.parentsObject = []
         lastObject: "DSObject" = self
