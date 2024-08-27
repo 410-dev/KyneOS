@@ -140,7 +140,7 @@ class UserSpace:
         
     }
 
-    processes: dict[int, dict] = {
+    processes: dict[int, Process] = {
 
     }
 
@@ -187,7 +187,7 @@ class UserSpace:
         UserSpace.localLogon.pop(f"{user.email}:{user.home}")
 
     @staticmethod
-    def registerProcess(process):
+    def registerProcess(process: Process):
         UserSpace.processes[process.pid] = process
 
     @staticmethod
