@@ -37,10 +37,10 @@ class Process:
         self.assignedTTY: int = self.ownerProcess.assignedTTY if self.ownerProcess else 1
 
         # Display the process creation details
-        if self.ownerProcess:
-            print(f"Process '{self.name}' created. Owned by: '{self.ownerProcess.name}'")
-        else:
-            print(f"Process '{self.name}' created as a Kernel Process.")
+        # if self.ownerProcess:
+        #     print(f"Process '{self.name}' created. Owned by: '{self.ownerProcess.name}'")
+        # else:
+        #     print(f"Process '{self.name}' created as a Kernel Process.")
 
 
     def getOwnerProcess(self) -> "Process":
@@ -54,7 +54,6 @@ class Process:
                     if isinstance(caller_self, Process):
                         if caller_self.pid == self.pid:
                             continue
-                        print(f"Owner process found: {caller_self.name} for pid {caller_self.pid}")
                         return caller_self
                         # continue
 
