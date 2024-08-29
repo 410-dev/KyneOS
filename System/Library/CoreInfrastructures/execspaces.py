@@ -4,11 +4,9 @@ import sys
 import time
 
 import System.Library.Security.APIAccessControls as APIAccessControls
-from System.Library.CoreInfrastructures.Objects.Process import Process
 
 
 class KernelSpace:
-
     loaded: dict[str, dict] = {
         # "ext.fs.kfs": {
         #     "name": "KyneFS",
@@ -50,6 +48,7 @@ class KernelSpace:
     @staticmethod
     def startService(bundlePath: str, bootParameters: list, restartService: bool = False):
         from System.Library.CoreInfrastructures.Objects.Bundle import Bundle
+        from System.Library.CoreInfrastructures.Objects.Process import Process
 
         bundle = Bundle(bundlePath)
         processObj = Process(bundle.displayName, bundle.getExecutable(), [], KernelSpace._kernelUser)
@@ -140,7 +139,7 @@ class UserSpace:
         
     }
 
-    processes: dict[int, Process] = {
+    processes: dict[int, "Process"] = {
 
     }
 
@@ -187,7 +186,7 @@ class UserSpace:
         UserSpace.localLogon.pop(f"{user.email}:{user.home}")
 
     @staticmethod
-    def registerProcess(process: Process):
+    def registerProcess(process: "Process"):
         UserSpace.processes[process.pid] = process
 
     @staticmethod
