@@ -72,7 +72,12 @@ class DSObject:
         return self.objectData["type"]
 
     def createObject(self, path: str, objectData: dict):
+        # TODO Check permission
         KernelSpace.syscall("ext.directory.dsparser", "createObject", f"{self.path}/{path}", objectData)
+
+    def deleteObject(self, path: str = "."):
+        # TODO Check permission
+        KernelSpace.syscall("ext.directory.dsparser", "deleteObject", f"{self.path}/{path}")
 
     def setAttribute(self, key: str, value):
         self.objectData[key] = value

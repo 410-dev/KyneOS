@@ -81,6 +81,32 @@ def createObject(path: str, objectData: dict) -> bool:
 
     return True
 
+
+def deleteObject(path: str) -> bool:
+    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures"):
+        raise Exception("Access denied.")
+
+    if path.startswith("/"):
+        path = path[1:]
+    pathDir = f"/Library/DirectoryService/{path}"
+    pathFull = f"{pathDir}/object.json"
+
+    if not fs.isFile(pathFull):
+        raise FileNotFoundError(f"File not found: {pathFull}")
+
+    dso: DSObject = DSObject(path)
+    if dso.getType() == "LO" and dso.getAttribute("lo.type") == "User":
+        dc: DSObject = dso.getParentObject("DC")
+        email: str = f"{dso.getName()}@{dso.getDomain()}"
+        for idx, user in enumerate(dc.getAttribute("dc.usernames")):
+            if f"{email}:" in user:
+                dc.getAttribute("dc.usernames").pop(idx)
+                break
+        dc.save()
+    fs.remove(pathDir)
+    return True
+
+
 def createObjectExternalAttribute(path: str, key: str, value) -> bool:
     if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures"):
         raise Exception("Access denied.")
