@@ -60,12 +60,23 @@ def createObject(path: str, objectData: dict) -> bool:
         else:
             fs.makeDir(f"/Library/DirectoryService/{path}")
 
-    fs.writes(pathFull, json.dumps(objectData))
+    fs.writes(pathFull, json.dumps(objectData, indent=4))
 
     if objectData.get("type") == "LO" and objectData.get("lo.type") == "User":
         dsObj = DSObject(path, objectData)
         dc: DSObject = dsObj.getParentObject("DC")
-        dc.getAttribute("dc.usernames").append(f"{objectData.get('lo.username')}@{dc.getAttribute('dc.domain')}:{path}")
+        while "//" in path:
+            path = path.replace("//", "/")
+        email: str = f"{dsObj.getName()}@{dsObj.getDomain()}"
+        strValue: str = f"{email}:/{path}"
+        replaced: bool = False
+        for idx, user in enumerate(dc.getAttribute("dc.usernames")):
+            if f"{email}:" in user:
+                dc.getAttribute("dc.usernames")[idx] = strValue
+                replaced = True
+                break
+        if not replaced:
+            dc.getAttribute("dc.usernames").append(strValue)
         dc.save()
 
     return True
@@ -77,7 +88,7 @@ def createObjectExternalAttribute(path: str, key: str, value) -> bool:
     if path.startswith("/"):
         path = path[1:]
     pathFull = f"/Library/DirectoryService/{path}/{key}.json"
-    fs.writes(pathFull, json.dumps(value))
+    fs.writes(pathFull, json.dumps(value, indent=4))
     return True
 
 def enumerateChildren(path: str) -> dict:
