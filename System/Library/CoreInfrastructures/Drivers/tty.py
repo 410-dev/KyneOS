@@ -55,13 +55,16 @@ def println(content: str, end: str = "\n", tty: int = -1, dontLeaveLog: bool = F
         if enableTTYDetection:
             stack = inspect.stack()
             for frame_info in stack:
-                frame_locals = frame_info.frame.f_locals
-                if 'self' in frame_locals:
-                    caller_self = frame_locals['self']
+                try:
+                    frame_locals = frame_info.frame.f_locals
+                    if 'self' in frame_locals:
+                        caller_self = frame_locals['self']
 
-                    if isinstance(caller_self, Process):
-                        tty = caller_self.assignedTTY
-                        break
+                        if isinstance(caller_self, Process):
+                            tty = caller_self.assignedTTY
+                            break
+                except:
+                    pass
         else:
             tty = currentDisplayTTY
 
