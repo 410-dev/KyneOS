@@ -2,6 +2,7 @@ import asyncio
 import sys
 import datetime
 import threading
+import time
 
 import System.stdio as stdio
 import System.fs as fs
@@ -29,6 +30,17 @@ def jPrint(string: str, end: str = "\n"):
         stdio.printf(string, end=end)
     else:
         print(string, end=end)
+
+def killsys():
+    import sys
+    import os
+    currentPid = os.getpid()
+    time.sleep(3)
+    if sys.platform == "win32":
+        # silently kill the process using taskkill
+        os.system(f"taskkill /F /PID {currentPid}")
+    else:
+        os.system(f"kill -9 {currentPid}")
 
 def init(args: list):
     global CURRENT_SYS_DISTRO
@@ -201,6 +213,17 @@ def init(args: list):
     args = [timeOfBoot] + args
     initProcess.launchSync(args)
 
+
+    for loadedKernelServices in KernelSpace.serviceProcesses:
+        jPrint(f"Terminating service: {loadedKernelServices}")
+        service: Process = KernelSpace.serviceProcesses[loadedKernelServices]
+        try:
+            service.kill(0)
+            jPrint(f"     OK: {loadedKernelServices}")
+        except Exception as e:
+            jPrint(f"  Error: {loadedKernelServices}: {e}")
+            jPrint("  KernelSpace failed to terminate the kernel services.")
+
     for loadedKernelComponents in KernelSpace.loaded:
         jPrint(f"Unloading: {loadedKernelComponents}")
         module = KernelSpace.loaded[loadedKernelComponents]["exec"]
@@ -224,3 +247,4 @@ def init(args: list):
         jPrint(f"     OK: {loadedKernelComponents}")
     jPrint("Kernel components unloaded.")
     jPrint("Kernel shutdown complete.")
+    killsys()
