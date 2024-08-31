@@ -1,7 +1,6 @@
 {
     "type": "DC",
     "dc.usernames": [
-        "localhost@None:/Local/localhost/kyne",
         "kyne@localhost:/Local/localhost/kyne"
     ]
 }
