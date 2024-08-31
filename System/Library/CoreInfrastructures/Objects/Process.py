@@ -1,10 +1,12 @@
 import importlib
 import asyncio
+import json
 import threading
 import ctypes
 import time
 import os
 import inspect
+import System.fs as fs
 import System.Library.CoreInfrastructures.journaling as Journaling
 from typing import Any, Callable
 
@@ -19,6 +21,7 @@ class Process:
         from System.Library.CoreInfrastructures.Objects.User import User
         self.pid: int = -1
         self.name: str = name
+        self.cwd: str = os.path.dirname(executable)
         self.executable: str = executable
         self.executableModule: str = executable.replace(".py", "").replace("/", ".").replace(os.path.sep, ".")
         if self.executableModule.startswith("."):
@@ -69,6 +72,47 @@ class Process:
                 children.extend(process.getChildrenProcesses())
         return children
 
+    def getCurrentWorkingDirectory(self) -> str:
+        return self.cwd
+
+    def getPreferenceOf(self, preferenceId: str) -> dict:
+        # Preference ID style:
+        # Scope:ID
+        # Example: Global:me.lks410.kyneos.machineprofile
+        scope, prefId = preferenceId.split(":")
+        currentUser = self.ownerUser
+        scopeMapping = {
+            "Global": "/Library/Preferences",
+            "Local": f"{currentUser.home}/Library/Preferences",
+            "System": "/System/Library/Preferences",
+        }
+        # TODO Set permission
+        prefPath = f"{scopeMapping[scope]}/{prefId}.json"
+        if fs.isFile(prefPath):
+            return json.loads(fs.reads(prefPath))
+        return {}
+
+    def setPreferenceOf(self, preferenceId: str, value: dict) -> bool:
+        # Preference ID style:
+        # Scope:ID
+        # Example: Global:me.lks410.kyneos.machineprofile
+        scope, prefId = preferenceId.split(":")
+        currentUser = self.ownerUser
+        scopeMapping = {
+            "Global": "/Library/Preferences",
+            "Local": f"{currentUser.home}/Library/Preferences",
+            "System": "/System/Library/Preferences",
+        }
+        # TODO Set permission
+        prefPath = f"{scopeMapping[scope]}/{prefId}.json"
+        fs.writes(prefPath, json.dumps(value, indent=4))
+        return True
+
+    def updatePreferenceOf(self, preferenceId: str, key: str, value) -> bool:
+        pref = self.getPreferenceOf(preferenceId)
+        pref[key] = value
+        return self.setPreferenceOf(preferenceId, pref)
+
     def _load_module(self):
         self.module = importlib.reload(importlib.import_module(self.executableModule))
 
@@ -100,11 +144,13 @@ class Process:
 
         children: list["Process"] = self.getChildrenProcesses()
         for childProcess in children:
-            print("Killing child process:", childProcess.pid)
             try:
                 if childProcess.pid != self.pid:
+                    Journaling.record("INFO", f"Killing child process: {childProcess.pid} ({childProcess.name})")
                     childProcess.kill(code)
             except Exception as e:
+                if "cannot join current thread" in str(e):
+                    continue
                 Journaling.record("ERROR", f"Error in killing child process: {e}")
 
         self.isRunning = False
@@ -129,6 +175,8 @@ class Process:
             self.isRunning = True
             Journaling.record("INFO", f"Process {self.pid} started.")
             exitCode = self.module.main(args, self)
+            if exitCode is None:
+                exitCode = 0
             self.processEnd(exitCode)
             self.isRunning = False
             return exitCode
