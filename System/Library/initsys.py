@@ -18,12 +18,7 @@ def jPrint(string: str, end: str = "\n"):
     stdio.printf(string, end=end)
 
 def main(args: list[str], process: Process):
-    if "--distro=s" in args:
-        CURRENT_SYS_DISTRO = "Server"
-    elif "--distro=d" in args:
-        CURRENT_SYS_DISTRO = "Desktop"
-    else:
-        CURRENT_SYS_DISTRO = "Desktop"
+    CURRENT_SYS_DISTRO = KernelSpace.currentDistro
 
     global timeOfBoot
     timeOfBoot = args[0]

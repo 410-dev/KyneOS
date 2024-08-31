@@ -34,10 +34,14 @@ def init(args: list):
     global CURRENT_SYS_DISTRO
     if "--distro=s" in args:
         CURRENT_SYS_DISTRO = "Server"
+        KernelSpace.currentDistro = "Server"
     elif "--distro=d" in args:
         CURRENT_SYS_DISTRO = "Desktop"
+        KernelSpace.currentDistro = "Desktop"
     else:
         CURRENT_SYS_DISTRO = "Desktop"
+        KernelSpace.currentDistro = "Desktop"
+    KernelSpace.bootArgs = args
     jPrint(f"{CURRENT_KRNL_NAME} {CURRENT_KRNL_VERSION} {CURRENT_KRNL_TESTVRS} Kernel - {CURRENT_SYS_DISTRO}")
     formattedCurrentTime: str = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     jPrint(f"Startup at: {formattedCurrentTime}")
