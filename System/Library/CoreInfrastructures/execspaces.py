@@ -23,6 +23,9 @@ class KernelSpace:
         # }
     }
 
+    serviceProcesses: dict[str, "Process"] = {
+    }
+
     _kernelUser = None
 
     currentDistro = "Desktop"
@@ -56,6 +59,14 @@ class KernelSpace:
         bundle = Bundle(bundlePath)
         processObj = Process(bundle.displayName, bundle.getExecutable(), [], KernelSpace._kernelUser)
         processObj.launchAsync(bootParameters)
+
+        svcName = f"{bundle.getAttributeOf('Type')}.{bundle.getAttributeOf('Class')}.{bundle.getAttributeOf('Id')}"
+
+        KernelSpace.serviceProcesses[svcName] = processObj
+
+    @staticmethod
+    def getServiceProcess(serviceName: str) -> "Process":
+        return KernelSpace.serviceProcesses.get(serviceName)
 
     @staticmethod
     def load(filePath: str, sysargs: list[str], isBundle: bool = True):
