@@ -1,1 +1,0 @@
-# Works on different port, but is frontend API for AuthMan - works the same way as local NethMan
