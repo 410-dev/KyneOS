@@ -22,7 +22,12 @@ async def mainAsync(args: list, process):
             username = stdio.scanf()
             if username == "exit":
                 stdio.println("Killing initsys...")
-                UserSpace.processes.get(1).kill(0)
+                for pid, p in UserSpace.processes.items():
+                    if p.executable == "/System/Library/initsys.py":
+                        stdio.println(f"Found initsys at PID {pid}")
+                        p.kill(0)
+                        break
+                # UserSpace.processes.get(1).kill(0)
                 return
             stdio.printf("Password: ", end="")
             password = stdio.scanf()
