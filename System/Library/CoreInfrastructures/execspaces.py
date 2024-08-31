@@ -25,6 +25,9 @@ class KernelSpace:
 
     _kernelUser = None
 
+    currentDistro = "Desktop"
+    bootArgs = []
+
     @staticmethod
     def syscall(ksObjId: str, functionName: str, *args, **kwargs):
         driverObj = KernelSpace.loaded.get(ksObjId)
@@ -154,8 +157,25 @@ class UserSpace:
         # }
     }
 
+    environment: dict[str, dict[str, str]] = {
+        # email: {
+        #     "key": "value"
+        # }
+    }
+
     pid = 0
     _administratorUser = None
+
+    @staticmethod
+    def env(email: str, key: str, value: str = None):
+        if not UserSpace.environment.get(email):
+            UserSpace.environment[email] = {}
+        if not value:
+            return UserSpace.environment.get(email).get(key)
+        if value == "":
+            UserSpace.environment[email].pop(key)
+        else:
+            UserSpace.environment[email][key] = value
 
     @staticmethod
     def syscall(ksObjId: str, functionName: str, *args, **kwargs):
@@ -195,8 +215,8 @@ class UserSpace:
         return UserSpace.pid
 
     @staticmethod
-    def startService(ownerUser: User, bundlePath: str, restartService: bool = False):
-        UserSpace.openBundle(ownerUser, True, bundlePath, [])
+    def startService(ownerUser: User, bundlePath: str, args: list, restartService: bool = False):
+        UserSpace.openBundle(ownerUser, True, bundlePath, args)
 
     @staticmethod
     def openBundle(ownerUser: User, usingAsync: bool, bundlePath: str, args: list):
