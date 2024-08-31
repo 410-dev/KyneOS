@@ -40,7 +40,7 @@ def getObjectExternalAttribute(path: str, key: str) -> dict:
     if path.startswith("/"):
         path = path[1:]
     pathFull = f"/Library/DirectoryService/{path}/{key}.json"
-    if fs.isFile(path):
+    if fs.isFile(pathFull):
         objectData = fs.reads(pathFull)
         return json.loads(objectData)
     else:
