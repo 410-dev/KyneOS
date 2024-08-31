@@ -18,7 +18,4 @@ import System.stdio as stdio
 defaultUser = User(None, path="/Local/localhost/kyne")
 if defaultUser.fullName is None:
     stdio.println("Creating default user 'kyne'...")
-    KernelSpace.syscall("ext.kyne.authman", "createUser", "kyne", "kyne", "Local", "localhost", "")
-    stdio.println("User 'kyne' created.")
-else:
-    stdio.println("Default user 'kyne' already exists.")
+    KernelSpace.syscall("ext.kyne.authman", "createUser", "kyne", "kyne", "Local", "localhost", "", True)
