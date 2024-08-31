@@ -27,13 +27,15 @@ async def mainAsync(args: list, process):
             stdio.printf("Password: ", end="")
             password = stdio.scanf()
 
+            if username == "" or password == "":
+                continue
+
             success, message, user = KernelSpace.syscall("ext.kyne.authman", "validateUser", username, password, "Local", "localhost", "")
 
             if not success:
-                stdio.println(message)
+                stdio.println("Logon error: " + message)
                 continue
             else:
-                stdio.println(message)
                 user: DSObject = user
                 user: User = User(user)
                 UserSpace.openBundle(user, False, f"/System/SystemUserInterfaces/{user.ui}", args)
