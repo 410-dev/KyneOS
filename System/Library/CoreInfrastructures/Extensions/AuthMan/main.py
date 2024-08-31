@@ -5,6 +5,7 @@ import time
 import System.Library.Security.RSA as RSA
 from System.Library.CoreInfrastructures.execspaces import KernelSpace
 from System.Library.CoreInfrastructures.Objects.DSObject import DSObject
+from System.Library.CoreInfrastructures.Objects.User import User
 
 userValidationQueue: dict[str, dict[str, int|str]] = {
     # "user@localhost#from": {
@@ -13,12 +14,14 @@ userValidationQueue: dict[str, dict[str, int|str]] = {
     # }
 }
 
-def createUser(username: str, password: str, forest: str, domain: str, directoryRoute: str):
+def createUser(username: str, password: str, forest: str, domain: str, directoryRoute: str, createDirectory: bool):
     dc: DSObject = DSObject(f"/{forest}/{domain}")
     authManHash = createAuthManHash(domain, username, password)
     authManPK = mkPublicKey(domain, username, password)
     userData: dict = DSObject.UserObjectData(username, username, username, directoryRoute, "", authManHash, authManPK)
     dc.createObject(f"{directoryRoute}/{username}", userData)
+    if createDirectory:
+        User(None, path=f"/{forest}/{domain}/{directoryRoute}/{username}").createHomeDirectory()
 
 def validateUser(username: str, password: str, forest: str, domain: str, directoryRoute: str) -> tuple[bool, str, DSObject|None]:
     dc: DSObject = DSObject(f"/{forest}/{domain}")
