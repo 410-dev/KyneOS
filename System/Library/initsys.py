@@ -88,6 +88,10 @@ def main(args: list[str], process: Process):
         for item in ordered:
             bind.append(item[1])
 
+    safeLocations: list[str] = [
+        "/System/Services/LogonUI"
+    ]
+
     services: list = binded[2]
     binded.pop(2)
     for idx, bind in enumerate(binded):
@@ -108,9 +112,12 @@ def main(args: list[str], process: Process):
 
     jPrint("Loading system services:")
     for bind in services:
+        if "--safe" in args and bind not in safeLocations:
+            jPrint(f"  [SAFE BOOT] Skipping: {bind}")
+            continue
         jPrint(f"  Starting: {bind}")
         try:
-            UserSpace.startService(KernelSpace._kernelUser, bind)
+            UserSpace.startService(KernelSpace._kernelUser, bind, args)
         except Exception as e:
             jPrint(f"   Error: {bind}: {e}")
             jPrint("  KernelSpace failed to load the system components.")

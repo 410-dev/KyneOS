@@ -103,6 +103,18 @@ def init(args: list):
     for service in kernelServicesEnumerated:
         jPrint(f"  {service}")
 
+    safeLocations: list[str] = [
+        "/System/Library/CoreInfrastructures/Drivers/keyboard.py",
+        "/System/Library/CoreInfrastructures/Drivers/stdin.py",
+        "/System/Library/CoreInfrastructures/Drivers/stdout.py",
+        "/System/Library/CoreInfrastructures/Drivers/tty.py",
+        "/System/Library/CoreInfrastructures/Extensions/AuthMan",
+        "/System/Library/CoreInfrastructures/Extensions/directories.py",
+        "/System/Library/CoreInfrastructures/Extensions/display.py",
+        "/System/Library/CoreInfrastructures/Extensions/dsParser.py",
+        "/System/Library/CoreInfrastructures/Extensions/kfs.py"
+    ]
+
     jPrint("Ordering kernel extensions by priority...")
     priority_max_value = 1000
     binded: list = [kernelExtensionsEnumerated, kernelDriversEnumerated, kernelServicesEnumerated]
@@ -158,6 +170,9 @@ def init(args: list):
         elif idx == 1:
             jPrint("Loading kernel drivers:")
         for item in bind:
+            if "--safe" in args and item not in safeLocations:
+                jPrint(f"  [SAFE BOOT] Skipping: {item}")
+                continue
             isBundle: bool = not item.endswith(".py")
             jPrint(f"  Loading: {item}")
             try:
@@ -170,6 +185,9 @@ def init(args: list):
 
     jPrint("Loading kernel services:")
     for bind in services:
+        if "--safe" in args and bind not in safeLocations:
+            jPrint(f"  [SAFE BOOT] Skipping: {bind}")
+            continue
         jPrint(f"  Starting: {bind}")
         try:
             KernelSpace.startService(bind, args)
