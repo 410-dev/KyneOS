@@ -1,4 +1,9 @@
+import json
+
+import System.fs as fs
 from System.Library.CoreInfrastructures.Objects.DSObject import DSObject
+
+
 
 class User:
     def __init__(self, dsObject: DSObject|None, path: str = None):
@@ -10,7 +15,7 @@ class User:
             except Exception:
                 dsObject = DSObject(path, DSObject.UserObjectData(None, None, None, None, None, "", ""))
         self.dsObject = dsObject
-        self.username = dsObject.getAttribute("username")
+        self.username = dsObject.getName()
         self.fullName = dsObject.getAttribute("name")
         self.displayName = dsObject.getAttribute("label")
         self.email = f"{self.username}@{dsObject.getDomain()}"
