@@ -22,3 +22,45 @@ class User:
         self.home = dsObject.getAttribute("home")
         self.ui = dsObject.getAttribute("ui")
         self.shell = dsObject.getAttribute("shell")
+
+
+    def createHomeDirectory(self):
+        requiredDirStruct: list = [
+            "/Library/Preferences",
+            "/Library/Extensions",
+            "/Library/Services",
+            "/Library/Drivers",
+            "/Library/Events",
+        ]
+
+        for directory in requiredDirStruct:
+            fs.makeDir(f"{self.home}{directory}")
+
+    def getExecPaths(self):
+        paths: list[str] = []
+
+        globalPathEnforcement: list = self.dsObject.getPolicyValue("SystemAdministration.Exec.EnforcedPaths", [])
+        enforceEnforcedOnly: bool = self.dsObject.getPolicyValue("SystemAdministration.Exec.EnforceEnforcedOnly", False)
+        globalPathDefaults: list = self.dsObject.getPolicyValue("SystemAdministration.Exec.DefaultPaths", [])
+        allowUserEditPath: bool = self.dsObject.getPolicyValue("UserAdministration.Exec.AllowUserEditPath", True)
+
+        if globalPathEnforcement:
+            paths.extend(globalPathEnforcement)
+            if enforceEnforcedOnly:
+                return paths
+        if globalPathDefaults:
+            paths.extend(globalPathDefaults)
+
+        if allowUserEditPath:
+            if fs.exists(f"{self.home}/Library/Preferences/me.lks410.kyneos.kyneui.json"):
+                userPaths = json.loads(fs.reads(f"{self.home}/Library/Preferences/me.lks410.kyneos.kyneui.json")).get("PATH", [])
+                paths.extend(userPaths)
+            from System.Library.CoreInfrastructures.execspaces import UserSpace
+            envPath = UserSpace.env(self.email, "PATH")
+            if envPath:
+                paths.extend(envPath.split(":"))
+
+        return paths
+
+    def __str__(self):
+        return f"User: {self.username} ({self.fullName})"
