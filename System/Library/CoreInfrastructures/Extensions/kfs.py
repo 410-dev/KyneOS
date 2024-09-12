@@ -36,11 +36,26 @@ def reads(path: str) -> str:
     with open(path, 'r') as f:
         return f.read()
 
+def readb(path: str) -> bytes:
+    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+        raise Exception("Access denied.")
+    path = os.path.abspath(f"{os.getcwd()}/{path}")
+    with open(path, 'rb') as f:
+        return f.read()
+
 def writes(path: str, content: str) -> bool:
     if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
         raise Exception("Access denied.")
     path = os.path.abspath(f"{os.getcwd()}/{path}")
     with open(path, 'w') as f:
+        f.write(content)
+    return True
+
+def writeb(path: str, content: bytes) -> bool:
+    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+        raise Exception("Access denied.")
+    path = os.path.abspath(f"{os.getcwd()}/{path}")
+    with open(path, 'wb') as f:
         f.write(content)
     return True
 
