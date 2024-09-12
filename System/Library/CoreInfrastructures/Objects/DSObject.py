@@ -45,7 +45,9 @@ class DSObject:
             f"{DSObject.TYPES[key].lower()}.shell": "$default",
             f"{DSObject.TYPES[key].lower()}.authorization": {
                 "AuthManHash": authManHash,
-                "AuthManPK": authManPK
+                "AuthManPK": authManPK,
+                "MaxPermission": 0,
+                "DefaultPermission": 0
             }
         }
 

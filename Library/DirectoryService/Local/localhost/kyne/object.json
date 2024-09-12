@@ -10,6 +10,8 @@
     "lo.shell": "$default",
     "lo.authorization": {
         "AuthManHash": "228fe676ed51bf5537c935141fc93d47c1b39fbd16054c9ad015470a6d3b7592",
-        "AuthManPK": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA92Kdigvio0GKno3ocOVq\nNaDe8NhJngIJ8+nnAKztG4pqcANnscSfDIX1KCkBakVciS0/ULb0t2hvsxBYwuzo\nUkaLknJPlq9k7ExoYitlxN1QOW0b2Dt9X2jDdMScnqigt6Qm4yeVSRmRz6urPxTR\nofkrd/pOAbMcp7QnpGw7AOzjN8pqkd6p9zf5bLux3TlRb0l4zBQLuVvP6T8iv53E\nC3vj/S4LC+doxgbrWbm2oaXyS/+2rsHs9lLlAP718MiwGrDJ/v50rglyixX05e3v\nTtPvrkpaAGPnYTWjicEznLU0Z86Aosiu9Im1K3q0zwdnN/l4yVuwrssugtpie8dJ\nRwIDAQAB\n-----END PUBLIC KEY-----"
+        "AuthManPK": "-----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA92Kdigvio0GKno3ocOVq\nNaDe8NhJngIJ8+nnAKztG4pqcANnscSfDIX1KCkBakVciS0/ULb0t2hvsxBYwuzo\nUkaLknJPlq9k7ExoYitlxN1QOW0b2Dt9X2jDdMScnqigt6Qm4yeVSRmRz6urPxTR\nofkrd/pOAbMcp7QnpGw7AOzjN8pqkd6p9zf5bLux3TlRb0l4zBQLuVvP6T8iv53E\nC3vj/S4LC+doxgbrWbm2oaXyS/+2rsHs9lLlAP718MiwGrDJ/v50rglyixX05e3v\nTtPvrkpaAGPnYTWjicEznLU0Z86Aosiu9Im1K3q0zwdnN/l4yVuwrssugtpie8dJ\nRwIDAQAB\n-----END PUBLIC KEY-----",
+        "MaxPermission": 32768,
+        "DefaultPermission": 0
     }
 }
