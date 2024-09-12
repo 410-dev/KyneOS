@@ -12,5 +12,11 @@
     "SystemAdministration.Security.Password.Expiry.ExpireAfterDays": 90,
     "SystemAdministration.Security.Password.Expiry.WarnBeforeDays": 7,
     "SystemAdministration.Security.AuthMan.RemoteLogin.Enabled": true,
-    "SystemAdministration.Security.AuthMan.RemoteLogin.ChallengeTimeLiveSeconds": 60
+    "SystemAdministration.Security.AuthMan.RemoteLogin.ChallengeTimeLiveSeconds": 60,
+    "SystemAdministration.Security.Logon.Banner.Enabled": false,
+    "SystemAdministration.Security.Logon.Banner.Message": "This is a secure system. Unauthorized access is prohibited.",
+    "SystemAdministration.Security.Logon.Banner.Title": "WARNING",
+    "SystemAdministration.Security.InteractiveLogon.TimeoutPerFailedAttempt": 1,
+    "SystemAdministration.Security.Logon.MaxFailedAttempts": 5,
+    "SystemAdministration.Security.Logon.LockoutTime": 30
 }
