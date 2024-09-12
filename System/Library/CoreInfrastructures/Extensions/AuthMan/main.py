@@ -28,7 +28,7 @@ def validateUser(username: str, password: str, forest: str, domain: str, directo
     user: DSObject = dc.getChildObject(f"{directoryRoute}/{username}")
     if user is None:
         return False, "Invalid username or password.", None
-    authManHash = createAuthManHash(domain, username, password)
+    authManHash: str = createAuthManHash(domain, username, password)
 
     # Use hash only for validation if local
     if "local" in dc.getName().lower():
@@ -46,6 +46,46 @@ def validateUser(username: str, password: str, forest: str, domain: str, directo
     # Use public key for validation if remote
     else:
         return False, "Remote validation requires challenge based authentication.", None
+
+
+def enableAutoLogon(username: str, password: str) -> tuple[bool, str]:
+    success, message, user = validateUser(username, password, "Local", "localhost", "Users")
+    if not success:
+        return False, message
+
+    user: DSObject = user
+    user.getAttribute("authorization")["AutoLogonEnabled"] = True
+    user.save()
+
+    KernelSpace.syscall("drv.hw.nvram", "write", "AutoLogonEnabled", "true")
+    KernelSpace.syscall("drv.hw.nvram", "write", "AutoLogonUsername", username)
+    KernelSpace.syscall("drv.hw.nvram", "write", "AutoLogonPassword", password)
+
+    return True, "Auto logon enabled."
+
+
+def autoLogonEnabled() -> bool:
+    return KernelSpace.syscall("drv.hw.nvram", "read", "AutoLogonEnabled") == "true"
+
+
+def disableAutoLogon(username: str, password: str) -> tuple[bool, str]:
+    KernelSpace.syscall("drv.hw.nvram", "remove", "AutoLogonEnabled")
+    KernelSpace.syscall("drv.hw.nvram", "remove", "AutoLogonUsername")
+    KernelSpace.syscall("drv.hw.nvram", "remove", "AutoLogonPassword")
+    return True, "Auto logon disabled."
+
+
+def autoLogon(forest: str, domain: str, directoryRoute: str) -> tuple[bool, str, DSObject|None]:
+    username = KernelSpace.syscall("drv.hw.nvram", "read", "AutoLogonUsername")
+    password = KernelSpace.syscall("drv.hw.nvram", "read", "AutoLogonPassword")
+    if username is None or password is None:
+        return False, "Auto logon not enabled.", None
+
+    success, message, user = validateUser(username, password, forest, domain, directoryRoute)
+    if not success:
+        return False, message, None
+
+    return True, "Auto logon successful.", user
 
 
 def askChallenge(requestFrom: str, username: str, forest: str, domain: str, directoryRoute: str) -> tuple[bool, str]:
