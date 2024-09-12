@@ -38,6 +38,10 @@ def main(args: list, process):
 
         stdio.printf(formattedLine, end="")
         command = stdio.scanf()
+        commandComponents: list = splitStringBySpaceWhileConsideringEscapeAndQuotation(command)
+
+        if len(commandComponents[0]) == 0:
+            continue
 
         paths: list[str] = process.ownerUser.getExecPaths()
         if command == "exit" or command == "logout":
@@ -63,11 +67,40 @@ def main(args: list, process):
 
         else:
             for path in paths:
-                if fs.isFile(f"{path}/{command}/main.py"):
-                    UserSpace.openBundle(process.ownerUser, False, f"{path}/{command}", [])
-                    break
-                elif fs.isFile(f"{path}/{command}.py"):
-                    UserSpace.openExecutable(process.ownerUser, False, f"{path}/{command}", [])
-                    break
+                try:
+                    if fs.isFile(f"{path}/{commandComponents[0]}/main.py"):
+                        UserSpace.openBundle(process.ownerUser, False, f"{path}/{commandComponents[0]}", commandComponents, cwd)
+                        break
+                    elif fs.isFile(f"{path}/{commandComponents[0]}.py"):
+                        UserSpace.openExecutable(process.ownerUser, False, f"{path}/{commandComponents[0]}", commandComponents, cwd)
+                        break
+                except Exception as e:
+                    stdio.println(f"Error: {e}")
+                    continue
             else:
-                stdio.println(f"Command '{command}' not found")
+                stdio.println(f"Command '{commandComponents[0]}' not found")
+
+
+def splitStringBySpaceWhileConsideringEscapeAndQuotation(rawStringLine: str) -> list[str]:
+    splitLine: list[str] = []
+    currentString: str = ""
+    inEscape: bool = False
+    inQuotation: bool = False
+    for char in rawStringLine:
+        if inEscape:
+            currentString += char
+            inEscape = False
+            continue
+        if char == "\\":
+            inEscape = True
+            continue
+        if char == "\"":
+            inQuotation = not inQuotation
+            continue
+        if char == " " and not inQuotation:
+            splitLine.append(currentString)
+            currentString = ""
+            continue
+        currentString += char
+    splitLine.append(currentString)
+    return splitLine
