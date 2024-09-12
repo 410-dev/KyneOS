@@ -2,7 +2,7 @@ import json
 
 import System.fs as fs
 from System.Library.CoreInfrastructures.Objects.DSObject import DSObject
-
+from System.Library.CoreInfrastructures.execspaces import KernelSpace
 
 
 class User:
@@ -22,6 +22,26 @@ class User:
         self.home = dsObject.getAttribute("home")
         self.ui = dsObject.getAttribute("ui")
         self.shell = dsObject.getAttribute("shell")
+        self.permission = 0
+
+    def isAdministrator(self):
+        return self.permission >= 32767
+
+    def escalatePrivilege(self, adminName: str, adminPass: str, forest: str = "Local", domain: str = "localhost", directoryRoute: str = "/"):
+        success, message, user = KernelSpace.syscall("ext.kyne.authman", "validateUser", adminName, adminPass, forest, domain, directoryRoute)
+        if not success:
+            return False, message
+
+        user: DSObject = user
+        maxPermission = user.getAttribute("authorization")["MaxPermission"]
+        if maxPermission < 32767:
+            return False, "Insufficient permissions."
+
+        self.permission = maxPermission
+        return True, "Authorization successful."
+
+    def restoreDefaultPrivilege(self):
+        self.permission = self.dsObject.getAttribute("authorization")["DefaultPermission"]
 
 
     def createHomeDirectory(self):
