@@ -18,7 +18,7 @@ def jPrint(string: str, end: str = "\n"):
     stdio.printf(string, end=end)
 
 def main(args: list[str], process: Process):
-    CURRENT_SYS_DISTRO = KernelSpace.currentDistro
+    CURRENT_SYS_DISTRO = KernelSpace.getCurrentDistro()
 
     global timeOfBoot
     timeOfBoot = args[0]

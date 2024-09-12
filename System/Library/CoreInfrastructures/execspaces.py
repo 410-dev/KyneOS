@@ -28,8 +28,17 @@ class KernelSpace:
 
     _kernelUser = None
 
-    currentDistro = "Desktop"
-    bootArgs = []
+    _currentDistro = "Desktop"
+    _bootArgs = []
+
+    @staticmethod
+    def getCurrentDistro():
+        return KernelSpace._currentDistro
+
+    @staticmethod
+    def getBootArgs():
+        # Copy list
+        return KernelSpace._bootArgs[:]
 
     @staticmethod
     def syscall(ksObjId: str, functionName: str, *args, **kwargs):
@@ -227,18 +236,20 @@ class UserSpace:
 
     @staticmethod
     def startService(ownerUser: User, bundlePath: str, args: list, restartService: bool = False):
-        UserSpace.openBundle(ownerUser, True, bundlePath, args)
+        UserSpace.openBundle(ownerUser, True, bundlePath, args, None)
 
     @staticmethod
-    def openBundle(ownerUser: User, usingAsync: bool, bundlePath: str, args: list):
+    def openBundle(ownerUser: User, usingAsync: bool, bundlePath: str, args: list, cwd: str|None) -> int:
         from System.Library.CoreInfrastructures.Objects.Bundle import Bundle
         bundle = Bundle(bundlePath)
-        return UserSpace.openExecutable(ownerUser, usingAsync, bundle.getExecutable(), args)
+        return UserSpace.openExecutable(ownerUser, usingAsync, bundle.getExecutable(), args, cwd)
 
     @staticmethod
-    def openExecutable(ownerUser: User, usingAsync: bool, executablePath: str, args: list) -> int:
+    def openExecutable(ownerUser: User, usingAsync: bool, executablePath: str, args: list, cwd: str|None) -> int:
         from System.Library.CoreInfrastructures.Objects.Process import Process
         processObj = Process(executablePath, executablePath, args, ownerUser)
+        if cwd is not None:
+            processObj.cwd = cwd
 
         if usingAsync:
             return processObj.launchAsync(args)
