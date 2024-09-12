@@ -24,7 +24,7 @@ class DSObject:
             self.objectData = dobj.objectData
         self.parentsObject = []
         lastObject: "DSObject" = self
-        while lastObject.getType() != "FR":
+        while lastObject.getType() != "FR" and lastObject.getType() != "ROOT":
             lastObject = lastObject.getParentObject()
             self.parentsObject.append(lastObject)
         self.parentsObject.reverse()
@@ -117,3 +117,5 @@ class DSObject:
     def __str__(self):
         return f"DSObject(TYPE={self.getType()},NAME={self.getName()},PATH={self.path},DOM={self.getDomain()})"
 
+    def exists(self):
+        return KernelSpace.syscall("ext.directory.dsparser", "getObject", self.path) is not None
