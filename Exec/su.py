@@ -9,7 +9,10 @@ def main(args, process: Process):
         stdio.printf("Password >> ", end="")
         password = stdio.scanf()
         if process.ownerUser.escalatePrivilege(process.ownerUser.username, password):
-            stdio.println("Privilege escalated.")
+            if process.ownerUser.isAdministrator():
+                stdio.println("Privilege escalated.")
+            else:
+                stdio.println("Escalation failed.")
         else:
             stdio.println("Escalation failed.")
     else:
