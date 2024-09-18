@@ -24,7 +24,6 @@ def Enumerate(namespace: str, scope: str, distro: str, user: User = None) -> lis
             traversePaths.append(f"/Library/Server/{namespace}")
     elif scope == "Kernel":
         traversePaths.append(f"/System/Library/{namespace}")
-        traversePaths.append(f"/System/Library/{namespace}")
         if distro == "Server":
             traversePaths.append(f"/System/Library/ServerInfrastructures/{namespace}")
     elif scope == "User":

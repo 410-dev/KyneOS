@@ -94,8 +94,8 @@ def init(args: list):
     kernelExtensionsEnumerated: list = LoadableEnumerator.Enumerate("Extensions", "Kernel", CURRENT_SYS_DISTRO)
     jPrint("Enumerating kernel drivers...")
     kernelDriversEnumerated: list = LoadableEnumerator.Enumerate("Drivers", "Kernel", CURRENT_SYS_DISTRO)
-    jPrint("Enumerating kernel services...")
-    kernelServicesEnumerated: list = LoadableEnumerator.Enumerate("Services", "Kernel", CURRENT_SYS_DISTRO)
+    # jPrint("Enumerating kernel services...")
+    # kernelServicesEnumerated: list = LoadableEnumerator.Enumerate("Services", "Kernel", CURRENT_SYS_DISTRO)
 
     for preload in preloadList:
         if preload[0] in kernelExtensionsEnumerated:
@@ -174,7 +174,7 @@ def init(args: list):
         for item in ordered:
             bind.append(item[1])
 
-    services: list = binded[2]
+    # services: list = binded[2]
     binded.pop(2)
     for idx, bind in enumerate(binded):
         if idx == 0:
@@ -195,24 +195,23 @@ def init(args: list):
                 sys.exit(1)
             jPrint(f"       OK: {item}")
 
-    jPrint("Loading kernel services:")
-    for bind in services:
-        if "--safe" in args and bind not in safeLocations:
-            jPrint(f"  [SAFE BOOT] Skipping: {bind}")
-            continue
-        jPrint(f"  Starting: {bind}")
-        try:
-            KernelSpace.startService(bind, args)
-        except Exception as e:
-            jPrint(f"   Error: {bind}: {e}")
-            jPrint("  KernelSpace failed to load the kernel components.")
-            sys.exit(1)
-        jPrint(f"        OK: {bind}")
+    # jPrint("Loading kernel services:")
+    # for bind in services:
+    #     if "--safe" in args and bind not in safeLocations:
+    #         jPrint(f"  [SAFE BOOT] Skipping: {bind}")
+    #         continue
+    #     jPrint(f"  Starting: {bind}")
+    #     try:
+    #         KernelSpace.startService(bind, args)
+    #     except Exception as e:
+    #         jPrint(f"   Error: {bind}: {e}")
+    #         jPrint("  KernelSpace failed to load the kernel components.")
+    #         sys.exit(1)
+    #     jPrint(f"        OK: {bind}")
 
     initProcess: Process = Process("init", "/System/Library/initsys.py", args, KernelSpace._kernelUser)
     args = [timeOfBoot] + args
     initProcess.launchSync(args)
-
 
     for loadedKernelServices in KernelSpace.serviceProcesses:
         jPrint(f"Terminating service: {loadedKernelServices}")
