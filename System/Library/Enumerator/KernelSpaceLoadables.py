@@ -59,6 +59,9 @@ def Enumerate(namespace: str, scope: str, distro: str, user: User = None) -> lis
                     try:
                         bundle = Bundle(f"{path}/{file}")
                         if bundle.isBundleType(f"{namespace}") and bundle.isDistroSupported(distro):
+                            if bundle.getAttributeOf("Enabled") is not None and not bundle.getAttributeOf("Enabled"):
+                                stdio.println(f"  Bundle {path}/{file} is disabled. Skipping.")
+                                continue
                             loadables.append(f"{path}/{file}")
                     except Exception as e:
                         stdio.println("Warning: Non-bundle directory found. Skipping.")
