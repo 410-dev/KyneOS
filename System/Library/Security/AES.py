@@ -1,14 +1,23 @@
 import inspect
-import os.path
 import base64
 import hashlib
 import random
-from Crypto.Cipher import AES as AESLocal
-from Crypto.Util.Padding import pad, unpad
-from Crypto.Cipher import PKCS1_OAEP
-from Crypto.PublicKey import RSA
-from Crypto.Hash import SHA256
-from Crypto.Protocol.KDF import PBKDF2
+import sys
+import os
+if sys.platform == "darwin":
+    from Cryptodome.Cipher import AES
+    from Cryptodome.Util.Padding import pad, unpad
+    from Cryptodome.Cipher import PKCS1_OAEP
+    from Cryptodome.PublicKey import RSA
+    from Cryptodome.Hash import SHA256
+    from Cryptodome.Protocol.KDF import PBKDF2
+else:
+    from Crypto.Cipher import AES as AESLocal
+    from Crypto.Util.Padding import pad, unpad
+    from Crypto.Cipher import PKCS1_OAEP
+    from Crypto.PublicKey import RSA
+    from Crypto.Hash import SHA256
+    from Crypto.Protocol.KDF import PBKDF2
 
 
 def AESEncrypt(data: str, key: str) -> str:

@@ -1,9 +1,16 @@
 import base64
 import random
-from Crypto.Cipher import PKCS1_OAEP
-from Crypto.PublicKey import RSA
-from Crypto.Hash import SHA256
-from Crypto.Protocol.KDF import PBKDF2
+import sys
+if sys.platform == "darwin":
+    from Cryptodome.Cipher import PKCS1_OAEP
+    from Cryptodome.PublicKey import RSA
+    from Cryptodome.Hash import SHA256
+    from Cryptodome.Protocol.KDF import PBKDF2
+else:
+    from Crypto.Cipher import PKCS1_OAEP
+    from Crypto.PublicKey import RSA
+    from Crypto.Hash import SHA256
+    from Crypto.Protocol.KDF import PBKDF2
 
 def Encrypt(content: str, pubk: str) -> str:
     """Encrypt the content using the provided public key."""
