@@ -27,4 +27,4 @@ def killsys():
     else:
         os.system(f"kill -9 {currentPid}")
 
-KernelSpace.syscall("drv.hardwareio.keyboard", "addKeySwitch", [[keyboard.Key.shift, keyboard.Key.esc]], lambda: killsys())
+KernelSpace.syscall("drv.hardwareio.keyboard", "addKeySwitch", [[keyboard.Key.ctrl, keyboard.Key.esc]], lambda: killsys())
