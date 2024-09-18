@@ -1,7 +1,0 @@
-{
-    "Enabled": false,
-    "FrameworkBind": "/System/Library/Frameworks/ScriptShellv1",
-    "Variables": {
-        "SCSH_HOME": "/System/Library/Frameworks/ScriptShellv1/"
-    }
-}

@@ -1,0 +1,18 @@
+{
+    "Bundle": "KyneOS:Framework:1.0",
+    "DisplayName": "KyneLangV1",
+    "ProcessName": "KyneLangV1",
+    "Description": "KyneOS proprietary scripting language interpreter",
+    "Attributes": {
+        "Priority": 0,
+        "Type": "framework",
+        "Class": "kyne",
+        "Id": "kynelangv1",
+        "Name": "KyneLangV1",
+        "Version": "1.0",
+        "Distro": "Universal"
+    },
+    "Runtime": {
+        "SupportedArchitecture": ["arm64", "amd64"]
+    }
+}

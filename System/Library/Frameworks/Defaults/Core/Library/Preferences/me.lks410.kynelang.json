@@ -1,0 +1,7 @@
+{
+    "Enabled": false,
+    "FrameworkBind": "/System/Library/Frameworks/KyneLangV1/",
+    "Variables": {
+        "KLANG_HOME": "/System/Library/Frameworks/KyneLangV1/"
+    }
+}
