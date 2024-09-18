@@ -43,3 +43,6 @@ def rename(src: str, dest: str) -> bool:
 
 def exists(path: str) -> bool:
     return isFile(path) or isDir(path)
+
+def accessible(path: str, mode: str, process) -> bool:
+    return KernelSpace.syscall(FILESYS, "accessible", path, mode, process)
