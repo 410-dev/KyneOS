@@ -51,7 +51,7 @@ async def mainAsync(args: list, process):
             else:
                 user: DSObject = user
                 user: User = User(user)
-                UserSpace.openBundle(user, False, f"/System/SystemUserInterfaces/{user.ui}", args, user.home)
+                UserSpace.openBundle(user, False, f"/System/UserInterfaces/{user.ui}", args, user.home)
 
         except Exception as e:
             stdio.println(f"Logon error: {e}")

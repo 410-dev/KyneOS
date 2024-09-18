@@ -1,8 +1,8 @@
 {
     "Bundle": "KyneOS:Application:1.0",
-    "DisplayName": "",
+    "DisplayName": "DiscordUI",
     "ProcessName": "DiscordUI",
-    "Description": "Discord User Interface",
+    "Description": "Discord Communication Interface",
     "Attributes": {
         "Priority": 0,
         "Type": "app",
