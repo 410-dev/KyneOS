@@ -24,7 +24,7 @@ class DSObject:
             self.objectData = dobj.objectData
         self.parentsObject = []
         lastObject: "DSObject" = self
-        while lastObject.getType() != "FR" and lastObject.getType() != "ROOT":
+        while lastObject.getType() != self.TYPES.get("ForestRoot") and lastObject.getType() != "ROOT":
             lastObject = lastObject.getParentObject()
             self.parentsObject.append(lastObject)
         self.parentsObject.reverse()
@@ -94,9 +94,31 @@ class DSObject:
         return os.path.basename(self.path)
 
     def getDomain(self):
+        if self.getType() == self.TYPES["ForestRoot"]:
+            return None
+        if self.getType() == self.TYPES["DomainController"]:
+            return self.getName()
         for parent in self.parentsObject:
-            if parent.getType() == "DC":
+            if parent.getType() == self.TYPES["DomainController"]:
                 return parent.getName()
+
+    def getForest(self):
+        if self.getType() == self.TYPES["ForestRoot"]:
+            return self.getName()
+        for parent in self.parentsObject:
+            if parent.getType() == self.TYPES["ForestRoot"]:
+                return parent.getName()
+
+    def getLocalPath(self):
+        path = self.path
+        components = path.split(self.getDomain(), 1)
+        if len(components) == 1:
+            return ""
+        else:
+            return path.split(self.getDomain(), 1)[1]
+
+    def getFullPath(self):
+        return self.path
 
     def getPolicy(self) -> dict:
         policy = {}
