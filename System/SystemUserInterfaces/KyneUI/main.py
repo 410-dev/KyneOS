@@ -1,4 +1,5 @@
 import System.stdio as stdio
+import System.shexec as shell
 from System import fs
 from System.Library.CoreInfrastructures.execspaces import UserSpace
 
@@ -8,7 +9,7 @@ def main(args: list, process):
     shellPrefData: dict = process.getPreferenceOf("Local:me.lks410.kyneos.kyneui")
     if shellPrefData == {}:
         process.setPreferenceOf("Local:me.lks410.kyneos.kyneui", {
-            "LineFormat": "{username}@{hostname}{domain}: {cwd} $ ",
+            "LineFormat": "{username}@{hostname}{domain}: {cwd} {privilege} ",
             "InitialEntryDirectory": process.ownerUser.home,
             "PATH": [
                 "/Exec",
@@ -22,14 +23,16 @@ def main(args: list, process):
     hostData: dict = process.getPreferenceOf("Global:me.lks410.kyneos.machineprofile")
 
     process.cwd = shellPrefData["InitialEntryDirectory"] if "InitialEntryDirectory" in shellPrefData else process.ownerUser.home
-    cwd = process.cwd
 
     while process.isRunning:
+        cwd = process.cwd
         shellPrefData = process.getPreferenceOf("Local:me.lks410.kyneos.kyneui")
         formattedLine = shellPrefData["LineFormat"]
         formattedLine = formattedLine.replace("{username}", process.ownerUser.username)
         formattedLine = formattedLine.replace("{hostname}", hostData["machineName"])
         formattedLine = formattedLine.replace("{cwd}", cwd if cwd != process.ownerUser.home else "~")
+        formattedLine = formattedLine.replace("{privilege}", "#" if process.ownerUser.isAdministrator() else "$")
+
         domain = process.ownerUser.email.split("@")[1]
         if domain != "localhost":
             formattedLine = formattedLine.replace("{domain}", f"({domain})")
@@ -38,69 +41,13 @@ def main(args: list, process):
 
         stdio.printf(formattedLine, end="")
         command = stdio.scanf()
-        commandComponents: list = splitStringBySpaceWhileConsideringEscapeAndQuotation(command)
+        commandComponents: list = shell.splitStringBySpaceWhileConsideringEscapeAndQuotation(command)
 
         if len(commandComponents[0]) == 0:
             continue
 
-        paths: list[str] = process.ownerUser.getExecPaths()
         if command == "exit" or command == "logout":
             break
-        elif command == "cd":
-            cwd = process.ownerUser.home
-            continue
-        elif command.startswith("cd "):
-            path = command.split(" ")[1]
-            if path.startswith("/"):
-                cwd = path
-            else:
-                cwd = f"{cwd}/{path}"
-            continue
-        elif command == "pwd":
-            stdio.println(cwd)
-            continue
-        elif command == "paths":
-            stdio.println("Paths:")
-            for path in paths:
-                stdio.println(f"  {path}")
-            continue
-
         else:
-            for path in paths:
-                try:
-                    if fs.isFile(f"{path}/{commandComponents[0]}/main.py"):
-                        UserSpace.openBundle(process.ownerUser, False, f"{path}/{commandComponents[0]}", commandComponents, cwd)
-                        break
-                    elif fs.isFile(f"{path}/{commandComponents[0]}.py"):
-                        UserSpace.openExecutable(process.ownerUser, False, f"{path}/{commandComponents[0]}", commandComponents, cwd)
-                        break
-                except Exception as e:
-                    stdio.println(f"Error: {e}")
-                    continue
-            else:
-                stdio.println(f"Command '{commandComponents[0]}' not found")
+            shell.interpretParameters(commandComponents, process)
 
-
-def splitStringBySpaceWhileConsideringEscapeAndQuotation(rawStringLine: str) -> list[str]:
-    splitLine: list[str] = []
-    currentString: str = ""
-    inEscape: bool = False
-    inQuotation: bool = False
-    for char in rawStringLine:
-        if inEscape:
-            currentString += char
-            inEscape = False
-            continue
-        if char == "\\":
-            inEscape = True
-            continue
-        if char == "\"":
-            inQuotation = not inQuotation
-            continue
-        if char == " " and not inQuotation:
-            splitLine.append(currentString)
-            currentString = ""
-            continue
-        currentString += char
-    splitLine.append(currentString)
-    return splitLine
