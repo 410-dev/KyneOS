@@ -82,5 +82,9 @@ class User:
 
         return paths
 
+    def allowedToExecuteInPath(self, executablePath: str) -> bool:
+        allowedToExecuteWithPathSpecified: bool = self.dsObject.getPolicyValue("UserAdministration.Exec.AllowedToExecuteWithPathSpecified", True)
+        return allowedToExecuteWithPathSpecified or executablePath in self.getExecPaths()
+
     def __str__(self):
         return f"User: {self.username} ({self.fullName})"
