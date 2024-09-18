@@ -1,0 +1,18 @@
+{
+    "Bundle": "KyneOS:Application:1.0",
+    "DisplayName": "",
+    "ProcessName": "DiscordUI",
+    "Description": "Discord User Interface",
+    "Attributes": {
+        "Priority": 0,
+        "Type": "app",
+        "Class": "kyne",
+        "Id": "discordui",
+        "Name": "DiscordUI",
+        "Version": "1.0",
+        "Distro": "Server"
+    },
+    "Runtime": {
+        "SupportedArchitecture": ["arm64", "amd64"]
+    }
+}
