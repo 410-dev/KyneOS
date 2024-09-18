@@ -49,5 +49,5 @@ def main(args: list, process):
         if command == "exit" or command == "logout":
             break
         else:
-            shell.interpretParameters(commandComponents, process)
-
+            # shell.interpretParameters(commandComponents, process)
+            shell.interpretLine(command, process)
