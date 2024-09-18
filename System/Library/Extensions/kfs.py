@@ -30,21 +30,21 @@ def DECLARATION() -> dict:
     }
 
 def reads(path: str) -> str:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+    if not APIAccessControls.isAccessFromScope("System.Library.execspaces"):
         raise Exception("Access denied.")
     path = os.path.abspath(f"{os.getcwd()}/{path}")
     with open(path, 'r') as f:
         return f.read()
 
 def readb(path: str) -> bytes:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+    if not APIAccessControls.isAccessFromScope("System.Library.execspaces"):
         raise Exception("Access denied.")
     path = os.path.abspath(f"{os.getcwd()}/{path}")
     with open(path, 'rb') as f:
         return f.read()
 
 def writes(path: str, content: str) -> bool:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+    if not APIAccessControls.isAccessFromScope("System.Library.execspaces"):
         raise Exception("Access denied.")
     path = os.path.abspath(f"{os.getcwd()}/{path}")
     with open(path, 'w') as f:
@@ -52,7 +52,7 @@ def writes(path: str, content: str) -> bool:
     return True
 
 def writeb(path: str, content: bytes) -> bool:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+    if not APIAccessControls.isAccessFromScope("System.Library.execspaces"):
         raise Exception("Access denied.")
     path = os.path.abspath(f"{os.getcwd()}/{path}")
     with open(path, 'wb') as f:
@@ -60,7 +60,7 @@ def writeb(path: str, content: bytes) -> bool:
     return True
 
 def appends(path: str, content: str) -> bool:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+    if not APIAccessControls.isAccessFromScope("System.Library.execspaces"):
         raise Exception("Access denied.")
     path = os.path.abspath(f"{os.getcwd()}/{path}")
     with open(path, 'a') as f:
@@ -68,32 +68,32 @@ def appends(path: str, content: str) -> bool:
     return True
 
 def isFile(path: str) -> bool:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+    if not APIAccessControls.isAccessFromScope("System.Library.execspaces"):
         raise Exception("Access denied.")
     path = os.path.abspath(f"{os.getcwd()}/{path}")
     return os.path.isfile(path)
 
 def isDir(path: str) -> bool:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+    if not APIAccessControls.isAccessFromScope("System.Library.execspaces"):
         raise Exception("Access denied.")
     path = os.path.abspath(f"{os.getcwd()}/{path}")
     return os.path.isdir(path)
 
 def listDir(path: str) -> list:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+    if not APIAccessControls.isAccessFromScope("System.Library.execspaces"):
         raise Exception("Access denied.")
     path = os.path.abspath(f"{os.getcwd()}/{path}")
     return os.listdir(path)
 
 def makeDir(path: str) -> bool:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+    if not APIAccessControls.isAccessFromScope("System.Library.execspaces"):
         raise Exception("Access denied.")
     path = os.path.abspath(f"{os.getcwd()}/{path}")
     os.makedirs(path, exist_ok=True)
     return True
 
 def remove(path: str) -> bool:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+    if not APIAccessControls.isAccessFromScope("System.Library.execspaces"):
         raise Exception("Access denied.")
     path = os.path.abspath(f"{os.getcwd()}/{path}")
     if os.path.isdir(path):
@@ -103,7 +103,7 @@ def remove(path: str) -> bool:
     return True
 
 def copy(src: str, dest: str) -> bool:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+    if not APIAccessControls.isAccessFromScope("System.Library.execspaces"):
         raise Exception("Access denied.")
     src = os.path.abspath(f"{os.getcwd()}/{src}")
     dest = os.path.abspath(f"{os.getcwd()}/{dest}")
@@ -111,7 +111,7 @@ def copy(src: str, dest: str) -> bool:
     return True
 
 def move(src: str, dest: str) -> bool:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+    if not APIAccessControls.isAccessFromScope("System.Library.execspaces"):
         raise Exception("Access denied.")
     src = os.path.abspath(f"{os.getcwd()}/{src}")
     dest = os.path.abspath(f"{os.getcwd()}/{dest}")
@@ -119,7 +119,7 @@ def move(src: str, dest: str) -> bool:
     return True
 
 def rename(src: str, dest: str) -> bool:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+    if not APIAccessControls.isAccessFromScope("System.Library.execspaces"):
         raise Exception("Access denied.")
     src = os.path.abspath(f"{os.getcwd()}/{src}")
     dest = os.path.abspath(f"{os.getcwd()}/{dest}")
@@ -127,7 +127,7 @@ def rename(src: str, dest: str) -> bool:
     return True
 
 def accessible(path: str, mode: str, process) -> bool:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+    if not APIAccessControls.isAccessFromScope("System.Library.execspaces"):
         raise Exception("Access denied.")
     # path = os.path.abspath(f"{os.getcwd()}/{path}")
     # return os.access(path, mode)

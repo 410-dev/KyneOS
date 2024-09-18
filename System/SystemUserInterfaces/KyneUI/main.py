@@ -1,7 +1,7 @@
 import System.stdio as stdio
 import System.shexec as shell
 from System import fs
-from System.Library.CoreInfrastructures.execspaces import UserSpace
+from System.Library.execspaces import UserSpace
 
 
 def main(args: list, process):

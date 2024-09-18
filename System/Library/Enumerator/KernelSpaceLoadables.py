@@ -1,8 +1,8 @@
 import System.fs as fs
 import System.stdio as stdio
 
-from System.Library.CoreInfrastructures.Objects.Bundle import Bundle
-from System.Library.CoreInfrastructures.Objects.User import User
+from System.Library.Objects.Bundle import Bundle
+from System.Library.Objects.User import User
 
 # This will return a list of bundles that match the scope and distro.
 # It will return as absolute path from root device (pwd in host)
@@ -23,7 +23,7 @@ def Enumerate(namespace: str, scope: str, distro: str, user: User = None) -> lis
             traversePaths.append(f"/System/Server/{namespace}")
             traversePaths.append(f"/Library/Server/{namespace}")
     elif scope == "Kernel":
-        traversePaths.append(f"/System/Library/CoreInfrastructures/{namespace}")
+        traversePaths.append(f"/System/Library/{namespace}")
         traversePaths.append(f"/System/Library/{namespace}")
         if distro == "Server":
             traversePaths.append(f"/System/Library/ServerInfrastructures/{namespace}")

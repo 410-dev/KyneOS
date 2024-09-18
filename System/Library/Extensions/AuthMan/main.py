@@ -3,9 +3,9 @@ import random
 import time
 
 import System.Library.Security.RSA as RSA
-from System.Library.CoreInfrastructures.execspaces import KernelSpace
-from System.Library.CoreInfrastructures.Objects.DSObject import DSObject
-from System.Library.CoreInfrastructures.Objects.User import User
+from System.Library.execspaces import KernelSpace
+from System.Library.Objects.DSObject import DSObject
+from System.Library.Objects.User import User
 
 userValidationQueue: dict[str, dict[str, int|str]] = {
     # "user@localhost#from": {

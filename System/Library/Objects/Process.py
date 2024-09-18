@@ -7,10 +7,10 @@ import time
 import os
 import inspect
 import System.fs as fs
-import System.Library.CoreInfrastructures.journaling as Journaling
+import System.Library.journaling as Journaling
 from typing import Any, Callable
 
-from System.Library.CoreInfrastructures.execspaces import KernelSpace, UserSpace
+from System.Library.execspaces import KernelSpace, UserSpace
 
 
 # from system.kernel.v100.modules import process as process_module
@@ -18,7 +18,7 @@ from System.Library.CoreInfrastructures.execspaces import KernelSpace, UserSpace
 
 class Process:
     def __init__(self, name: str, executable: str, arguments: list[str], ownerUser) -> None:
-        from System.Library.CoreInfrastructures.Objects.User import User
+        from System.Library.Objects.User import User
         self.pid: int = -1
         self.name: str = name
         self.cwd: str = os.path.dirname(executable)
@@ -64,7 +64,7 @@ class Process:
         return self
 
     def getChildrenProcesses(self) -> list["Process"]:
-        from System.Library.CoreInfrastructures.execspaces import UserSpace
+        from System.Library.execspaces import UserSpace
         children = []
         for pid, process in UserSpace.processes.items():
             if process.ownerProcess.pid == self.pid and process.pid != self.pid:
@@ -164,7 +164,7 @@ class Process:
         return True
 
     def launchSync(self, args: Any) -> int:
-        from System.Library.CoreInfrastructures.execspaces import UserSpace
+        from System.Library.execspaces import UserSpace
         self._load_module()
         self.pid = UserSpace.nextPID()
         self.launchedSync = True
@@ -216,7 +216,7 @@ class Process:
             self.processEnd(0)
 
     def launchAsync(self, args: Any) -> int:
-        from System.Library.CoreInfrastructures.execspaces import UserSpace
+        from System.Library.execspaces import UserSpace
         self._load_module()
         self.pid = UserSpace.nextPID()
         self.launchedSync = False

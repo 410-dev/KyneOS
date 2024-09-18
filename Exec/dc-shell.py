@@ -1,7 +1,7 @@
-from System.Library.CoreInfrastructures.Objects.Process import Process
-from System.Library.CoreInfrastructures.Objects.DSObject import DSObject
-from System.Library.CoreInfrastructures.Objects.User import User
-from System.Library.CoreInfrastructures.execspaces import KernelSpace
+from System.Library.Objects.Process import Process
+from System.Library.Objects.DSObject import DSObject
+from System.Library.Objects.User import User
+from System.Library.execspaces import KernelSpace
 
 import System.stdio as stdio
 import System.fs as fs
@@ -317,7 +317,7 @@ def userManagement(currentObject: DSObject, commandComponents: list[str]):
         if password != passwordConfirm:
             stdio.println("Passwords do not match.")
             return
-        from System.Library.CoreInfrastructures.execspaces import KernelSpace
+        from System.Library.execspaces import KernelSpace
         dc = currentObject.getDomain()
         fr = currentObject.getForest()
         route = currentObject.getLocalPath()

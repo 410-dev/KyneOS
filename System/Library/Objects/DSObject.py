@@ -1,6 +1,6 @@
 import os.path
 
-from System.Library.CoreInfrastructures.execspaces import KernelSpace
+from System.Library.execspaces import KernelSpace
 
 class DSObject:
 

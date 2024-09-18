@@ -1,8 +1,8 @@
 import json
 
 import System.fs as fs
-from System.Library.CoreInfrastructures.Objects.DSObject import DSObject
-from System.Library.CoreInfrastructures.execspaces import KernelSpace
+from System.Library.Objects.DSObject import DSObject
+from System.Library.execspaces import KernelSpace
 
 
 class User:
@@ -75,7 +75,7 @@ class User:
             if fs.exists(f"{self.home}/Library/Preferences/me.lks410.kyneos.kyneui.json"):
                 userPaths = json.loads(fs.reads(f"{self.home}/Library/Preferences/me.lks410.kyneos.kyneui.json")).get("PATH", [])
                 paths.extend(userPaths)
-            from System.Library.CoreInfrastructures.execspaces import UserSpace
+            from System.Library.execspaces import UserSpace
             envPath = UserSpace.env(self.email, "PATH")
             if envPath:
                 paths.extend(envPath.split(":"))

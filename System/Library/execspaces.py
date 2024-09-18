@@ -63,8 +63,8 @@ class KernelSpace:
 
     @staticmethod
     def startService(bundlePath: str, bootParameters: list, restartService: bool = False):
-        from System.Library.CoreInfrastructures.Objects.Bundle import Bundle
-        from System.Library.CoreInfrastructures.Objects.Process import Process
+        from System.Library.Objects.Bundle import Bundle
+        from System.Library.Objects.Process import Process
 
         bundle = Bundle(bundlePath)
         processObj = Process(bundle.displayName, bundle.getExecutable(), [], KernelSpace._kernelUser)
@@ -80,7 +80,7 @@ class KernelSpace:
 
     @staticmethod
     def load(filePath: str, sysargs: list[str], isBundle: bool = True):
-        from System.Library.CoreInfrastructures.Objects.Bundle import Bundle
+        from System.Library.Objects.Bundle import Bundle
         bundlePath: str = ""
         if isBundle:
             bundlePath = filePath
@@ -148,8 +148,8 @@ class KernelSpace:
 
     @staticmethod
     def init():
-        from System.Library.CoreInfrastructures.Objects.User import User
-        from System.Library.CoreInfrastructures.Objects.DSObject import DSObject
+        from System.Library.Objects.User import User
+        from System.Library.Objects.DSObject import DSObject
 
         if not KernelSpace._kernelUser:
             dso: DSObject = DSObject("/Local/localhost/KERNEL_USER")
@@ -240,13 +240,13 @@ class UserSpace:
 
     @staticmethod
     def openBundle(ownerUser: "User", usingAsync: bool, bundlePath: str, args: list, cwd: str|None) -> int:
-        from System.Library.CoreInfrastructures.Objects.Bundle import Bundle
+        from System.Library.Objects.Bundle import Bundle
         bundle = Bundle(bundlePath)
         return UserSpace.openExecutable(ownerUser, usingAsync, bundle.getExecutable(), args, cwd)
 
     @staticmethod
     def openExecutable(ownerUser: "User", usingAsync: bool, executablePath: str, args: list, cwd: str|None) -> int:
-        from System.Library.CoreInfrastructures.Objects.Process import Process
+        from System.Library.Objects.Process import Process
         processObj = Process(executablePath, executablePath, args, ownerUser)
         if cwd is not None:
             processObj.cwd = cwd
@@ -258,8 +258,8 @@ class UserSpace:
 
     @staticmethod
     def init():
-        from System.Library.CoreInfrastructures.Objects.User import User
-        from System.Library.CoreInfrastructures.Objects.DSObject import DSObject
+        from System.Library.Objects.User import User
+        from System.Library.Objects.DSObject import DSObject
 
         dso: DSObject = DSObject("/Local/localhost/Administrator")
         UserSpace._administratorUser = User(dso)

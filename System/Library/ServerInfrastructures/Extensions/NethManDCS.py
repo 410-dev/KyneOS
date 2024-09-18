@@ -1,5 +1,5 @@
 import System.stdio as stdio
-from System.Library.CoreInfrastructures.execspaces import KernelSpace
+from System.Library.execspaces import KernelSpace
 
 def DECLARATION() -> dict:
     return {

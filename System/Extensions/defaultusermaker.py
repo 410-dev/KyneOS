@@ -12,8 +12,8 @@ def DECLARATION() -> dict:
         "priority": 0
     }
 
-from System.Library.CoreInfrastructures.execspaces import KernelSpace
-from System.Library.CoreInfrastructures.Objects.User import User
+from System.Library.execspaces import KernelSpace
+from System.Library.Objects.User import User
 import System.stdio as stdio
 defaultUser = User(None, path="/Local/localhost/kyne")
 if defaultUser.fullName is None:

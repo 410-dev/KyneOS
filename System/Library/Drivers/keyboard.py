@@ -5,7 +5,7 @@ from collections.abc import Callable
 from pynput import keyboard
 
 import System.stdio as stdio
-from System.Library.CoreInfrastructures.execspaces import KernelSpace
+from System.Library.execspaces import KernelSpace
 from typing import Callable, List, Tuple
 
 def DECLARATION() -> dict:

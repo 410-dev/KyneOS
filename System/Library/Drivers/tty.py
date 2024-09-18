@@ -1,8 +1,8 @@
 import inspect
 
 import System.fs as fs
-from System.Library.CoreInfrastructures.Objects.Process import Process
-from System.Library.CoreInfrastructures.execspaces import KernelSpace
+from System.Library.Objects.Process import Process
+from System.Library.execspaces import KernelSpace
 
 
 def DECLARATION() -> dict:
@@ -26,7 +26,7 @@ scanfQueue: dict[int, bool] = {}
 def switchTTY(tty: int, silent: bool = False):
     global currentDisplayTTY
     currentDisplayTTY = tty
-    from System.Library.CoreInfrastructures.execspaces import KernelSpace
+    from System.Library.execspaces import KernelSpace
     if "--enforce-singletty" in KernelSpace._bootArgs:
         return
     if not fs.isFile(f"/tmp/tty{tty}.log"):

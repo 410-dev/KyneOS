@@ -1,5 +1,5 @@
-from System.Library.CoreInfrastructures.Objects.Process import Process
-from System.Library.CoreInfrastructures.execspaces import UserSpace
+from System.Library.Objects.Process import Process
+from System.Library.execspaces import UserSpace
 import System.stdio as stdio
 import System.fs as fs
 

@@ -4,7 +4,7 @@ import os.path
 import System.Library.Security.APIAccessControls as APIAccessControls
 import System.fs as fs
 
-from System.Library.CoreInfrastructures.Objects.DSObject import DSObject
+from System.Library.Objects.DSObject import DSObject
 
 def DECLARATION() -> dict:
     return {
@@ -21,7 +21,7 @@ def DECLARATION() -> dict:
     }
 
 def getObject(path: str) -> DSObject | None:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures"):
+    if not APIAccessControls.isAccessFromScope("System.Library"):
         raise Exception("Access denied.")
 
     if path.startswith("/"):
@@ -34,7 +34,7 @@ def getObject(path: str) -> DSObject | None:
         return None
 
 def getObjectExternalAttribute(path: str, key: str) -> dict:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures"):
+    if not APIAccessControls.isAccessFromScope("System.Library"):
         raise Exception("Access denied.")
 
     if path.startswith("/"):
@@ -47,7 +47,7 @@ def getObjectExternalAttribute(path: str, key: str) -> dict:
         return {}
 
 def createObject(path: str, objectData: dict) -> bool:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures"):
+    if not APIAccessControls.isAccessFromScope("System.Library"):
         raise Exception("Access denied.")
 
     if path.startswith("/"):
@@ -83,7 +83,7 @@ def createObject(path: str, objectData: dict) -> bool:
 
 
 def deleteObject(path: str) -> bool:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures"):
+    if not APIAccessControls.isAccessFromScope("System.Library"):
         raise Exception("Access denied.")
 
     if path.startswith("/"):
@@ -108,7 +108,7 @@ def deleteObject(path: str) -> bool:
 
 
 def createObjectExternalAttribute(path: str, key: str, value) -> bool:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures"):
+    if not APIAccessControls.isAccessFromScope("System.Library"):
         raise Exception("Access denied.")
 
     if path.startswith("/"):
@@ -118,7 +118,7 @@ def createObjectExternalAttribute(path: str, key: str, value) -> bool:
     return True
 
 def enumerateChildren(path: str) -> dict:
-    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures"):
+    if not APIAccessControls.isAccessFromScope("System.Library"):
         raise Exception("Access denied.")
 
     if path.startswith("/"):

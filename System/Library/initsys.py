@@ -3,10 +3,10 @@ import time
 
 import System.stdio as stdio
 import System.fs as fs
-import System.Library.CoreInfrastructures.Enumerator.KernelSpaceLoadables as LoadableEnumerator
-from System.Library.CoreInfrastructures.Objects.Process import Process
-from System.Library.CoreInfrastructures.execspaces import UserSpace, KernelSpace
-from System.Library.CoreInfrastructures.Objects.Bundle import Bundle
+import System.Library.Enumerator.KernelSpaceLoadables as LoadableEnumerator
+from System.Library.Objects.Process import Process
+from System.Library.execspaces import UserSpace, KernelSpace
+from System.Library.Objects.Bundle import Bundle
 
 timeOfBoot: float = 0
 

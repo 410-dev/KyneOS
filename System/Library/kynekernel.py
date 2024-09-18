@@ -8,11 +8,11 @@ import System.stdio as stdio
 import System.fs as fs
 
 import System.Library.initsys as initsys
-import System.Library.CoreInfrastructures.Enumerator.KernelSpaceLoadables as LoadableEnumerator
-from System.Library.CoreInfrastructures.Objects.Process import Process
+import System.Library.Enumerator.KernelSpaceLoadables as LoadableEnumerator
+from System.Library.Objects.Process import Process
 
-from System.Library.CoreInfrastructures.execspaces import KernelSpace
-from System.Library.CoreInfrastructures.Objects.Bundle import Bundle
+from System.Library.execspaces import KernelSpace
+from System.Library.Objects.Bundle import Bundle
 
 CURRENT_SYS_DISTRO = "Desktop"
 CURRENT_KRNL_NAME = "Kyne"
@@ -66,10 +66,10 @@ def init(args: list):
     # Import file system and output driver
     jPrint("Loading preload components for next process...")
     preloadList: list[tuple[str, bool]] = [
-        ("/System/Library/CoreInfrastructures/Extensions/kfs.py", False),
-        ("/System/Library/CoreInfrastructures/Extensions/directories.py", False),
-        ("/System/Library/CoreInfrastructures/Drivers/tty.py", False),
-        ("/System/Library/CoreInfrastructures/Drivers/stdout.py", False),
+        ("/System/Library/Extensions/kfs.py", False),
+        ("/System/Library/Extensions/directories.py", False),
+        ("/System/Library/Drivers/tty.py", False),
+        ("/System/Library/Drivers/stdout.py", False),
     ]
     for preload in preloadList:
         jPrint(f"Loading: {preload[0]}")
@@ -116,15 +116,15 @@ def init(args: list):
         jPrint(f"  {service}")
 
     safeLocations: list[str] = [
-        "/System/Library/CoreInfrastructures/Drivers/keyboard.py",
-        "/System/Library/CoreInfrastructures/Drivers/stdin.py",
-        "/System/Library/CoreInfrastructures/Drivers/stdout.py",
-        "/System/Library/CoreInfrastructures/Drivers/tty.py",
-        "/System/Library/CoreInfrastructures/Extensions/AuthMan",
-        "/System/Library/CoreInfrastructures/Extensions/directories.py",
-        "/System/Library/CoreInfrastructures/Extensions/display.py",
-        "/System/Library/CoreInfrastructures/Extensions/dsParser.py",
-        "/System/Library/CoreInfrastructures/Extensions/kfs.py"
+        "/System/Library/Drivers/keyboard.py",
+        "/System/Library/Drivers/stdin.py",
+        "/System/Library/Drivers/stdout.py",
+        "/System/Library/Drivers/tty.py",
+        "/System/Library/Extensions/AuthMan",
+        "/System/Library/Extensions/directories.py",
+        "/System/Library/Extensions/display.py",
+        "/System/Library/Extensions/dsParser.py",
+        "/System/Library/Extensions/kfs.py"
     ]
 
     jPrint("Ordering kernel extensions by priority...")

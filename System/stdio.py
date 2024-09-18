@@ -1,4 +1,4 @@
-from System.Library.CoreInfrastructures.execspaces import KernelSpace
+from System.Library.execspaces import KernelSpace
 
 def printf(string: str, end: str = "", tty: int = -1):
     KernelSpace.syscall("drv.io.stdout", "println", string, end=end, tty=tty)

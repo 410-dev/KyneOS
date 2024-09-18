@@ -1,4 +1,4 @@
-from System.Library.CoreInfrastructures.execspaces import KernelSpace
+from System.Library.execspaces import KernelSpace
 
 FILESYS = "ext.fs.kfs"
 

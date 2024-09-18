@@ -16,7 +16,7 @@ def DECLARATION() -> dict:
 
 import sys
 from pynput import keyboard
-from System.Library.CoreInfrastructures.execspaces import KernelSpace
+from System.Library.execspaces import KernelSpace
 
 def killsys():
     import sys

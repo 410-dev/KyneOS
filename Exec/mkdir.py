@@ -1,4 +1,4 @@
-from System.Library.CoreInfrastructures.Objects.Process import Process
+from System.Library.Objects.Process import Process
 import System.stdio as stdio
 import System.fs as fs
 
