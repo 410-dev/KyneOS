@@ -1,0 +1,9 @@
+// Instructions available
+COPY
+DELETE
+WRITE
+APPEND
+READ
+PRINT
+INPUT
+REQUIRE-ADMIN
