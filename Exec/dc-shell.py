@@ -6,6 +6,17 @@ from System.Library.CoreInfrastructures.execspaces import KernelSpace
 import System.stdio as stdio
 import System.fs as fs
 
+inputQueue: list[str] = []
+
+def nextInput(question: str = "") -> str:
+    if question != "":
+        stdio.printf(question, end="")
+    if len(inputQueue) == 0:
+        return stdio.scanf()
+    data = inputQueue.pop(0)
+    stdio.println(data)
+    return data
+
 def main(args, currentProcess: Process):
     if not currentProcess.ownerUser.isAdministrator():
         stdio.println("You must be an administrator to run this command.")
@@ -23,6 +34,7 @@ def main(args, currentProcess: Process):
     commandsQueue = []
     stringBuild: str = ""
     args.pop(0)
+    global inputQueue
     for arg in args:
         if arg == "++":
             commandsQueue.append(stringBuild.strip())
@@ -34,16 +46,11 @@ def main(args, currentProcess: Process):
         commandsQueue.append(stringBuild.strip())
         commandsQueue.append("exit")
 
-    for command in commandsQueue:
-        stdio.println(f"Queued: '{command}'")
+    inputQueue = commandsQueue
 
     while currentProcess.isRunning or len(commandsQueue) > 0:
         stdio.printf(f"{currentPosition} >> ", end="")
-        if len(commandsQueue) > 0:
-            command = commandsQueue.pop(0)
-            stdio.println(f"{command}")
-        else:
-            command = stdio.scanf()
+        command = nextInput()
 
         if command == "exit":
             break
@@ -55,8 +62,8 @@ def main(args, currentProcess: Process):
             stdio.println("forest      - Create a forest")
             stdio.println("domain      - Create a domain")
             stdio.println("ou          - Create a organizational unit")
-            stdio.println("user        - Create a user")
             stdio.println("site        - Manage a site")
+            stdio.println("user        - Create a user")
             stdio.println("this        - Display current object information")
             stdio.println("exit - Exit the shell")
             stdio.println("help - Display this help message")
@@ -125,6 +132,15 @@ def main(args, currentProcess: Process):
         elif commandComponents[0] == "domain":
             domainManagement(currentObject, commandComponents)
 
+        elif commandComponents[0] == "ou":
+            ouManagement(currentObject, commandComponents)
+
+        elif commandComponents[0] == "site":
+            siteManagement(currentObject, commandComponents)
+
+        elif commandComponents[0] == "user":
+            userManagement(currentObject, commandComponents)
+
     return 0
 
 
@@ -143,9 +159,12 @@ def forestManagement(currentObject: DSObject, commandComponents: list[str]):
             return
 
         forestName = commandComponents[2]
-        if DSObject(f"/{forestName}").exists():
-            stdio.println("Forest already exists.")
-            return
+        try:
+            if DSObject(f"/{forestName}").exists():
+                stdio.println("Forest already exists.")
+                return
+        except Exception:
+            pass
 
         forest = DSObject(f"/{forestName}")
         forest.createObject(forestName, {"name": forestName, "type": "Forest"})
@@ -165,13 +184,15 @@ def forestManagement(currentObject: DSObject, commandComponents: list[str]):
         stdio.println("Invalid command.")
 
 
-
 def domainManagement(currentObject: DSObject, commandComponents: list[str]):
     if KernelSpace.getCurrentDistro() != "Server":
         stdio.println("Domain management is only available on Server distro.")
         return
     if len(commandComponents) < 2:
         stdio.println("Usage: domain <command>")
+        stdio.println("Commands:")
+        stdio.println("    create <name> - Create a domain")
+        stdio.println("    delete - Delete the current domain")
         return
 
     elif commandComponents[1] == "create":
@@ -214,4 +235,93 @@ def ouManagement(currentObject: DSObject, commandComponents: list[str]):
         stdio.println("Commands:")
         stdio.println("    create <name> - Create an organizational unit")
         stdio.println("    delete - Delete the current organizational unit")
-        stdio.println("
+        # stdio.println("    list - List organizational units")
+        return
+
+    if commandComponents[1] == "create":
+        if len(commandComponents) < 3:
+            stdio.println("Usage: ou create <name>")
+            return
+        ouName = commandComponents[2]
+        currentObject.createObject(f"{ouName}", {"type": DSObject.TYPES["OrganizationalUnit"]})
+        stdio.println("Organizational unit created.")
+    elif commandComponents[1] == "delete":
+        if len(commandComponents) < 2:
+            stdio.println("Usage: ou delete")
+            stdio.println("This will delete the current organizational unit.")
+            return
+        if not currentObject.exists():
+            stdio.println("Organizational unit not found.")
+            return
+        currentObject.deleteObject()
+        stdio.println("Organizational unit deleted.")
+    else:
+        stdio.println("Invalid command.")
+
+    return
+
+def siteManagement(currentObject: DSObject, commandComponents: list[str]):
+    if KernelSpace.getCurrentDistro() != "Server":
+        stdio.println("Site management is only available on Server distro.")
+        return
+
+    if len(commandComponents) < 2:
+        stdio.println("Usage: site <command>")
+        stdio.println("Commands:")
+        stdio.println("    create <name> - Create a site")
+        stdio.println("    delete - Delete the current site")
+        return
+
+    if commandComponents[1] == "create":
+        if len(commandComponents) < 3:
+            stdio.println("Usage: site create <name>")
+            return
+        siteName = commandComponents[2]
+        currentObject.createObject(f"{siteName}", {"type": DSObject.TYPES["Site"]})
+        stdio.println("Site created.")
+    elif commandComponents[1] == "delete":
+        if len(commandComponents) < 2:
+            stdio.println("Usage: site delete")
+            stdio.println("This will delete the current site.")
+            return
+        if not currentObject.exists():
+            stdio.println("Site not found.")
+            return
+        currentObject.deleteObject()
+        stdio.println("Site deleted.")
+    else:
+        stdio.println("Invalid command.")
+
+    return
+
+def userManagement(currentObject: DSObject, commandComponents: list[str]):
+    if len(commandComponents) < 2:
+        stdio.println("Usage: user <command>")
+        stdio.println("Commands:")
+        stdio.println("    create <username> - Create a user")
+        stdio.println("    delete - Delete the current user")
+        stdio.println("    inspect - Display user information")
+        stdio.println("    modify - Modify user information")
+        return
+
+    if commandComponents[1] == "create":
+        if len(commandComponents) < 3:
+            stdio.println("Usage: user create <username>")
+            return
+        username = commandComponents[2]
+        if currentObject.getChildObject(username) is not None:
+            stdio.println("User already exists.")
+            return
+        password = nextInput("Password: ")
+        passwordConfirm = nextInput("Confirm password: ")
+        if password != passwordConfirm:
+            stdio.println("Passwords do not match.")
+            return
+        from System.Library.CoreInfrastructures.execspaces import KernelSpace
+        dc = currentObject.getDomain()
+        fr = currentObject.getForest()
+        route = currentObject.getLocalPath()
+        stdio.println(f"Creating default user '/{fr}/{dc}/{route}/{username}'...")
+        KernelSpace.syscall("ext.kyne.authman", "createUser", username, password, fr, dc, route, True)
+        stdio.println("User created.")
+
