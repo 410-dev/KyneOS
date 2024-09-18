@@ -1,7 +1,7 @@
 {
     "Bundle": "KyneOS:Service:1.0",
-    "DisplayName": "DiscordUI",
-    "ProcessName": "DiscordUI",
+    "DisplayName": "DiscordFrontend",
+    "ProcessName": "DiscordFrontend",
     "Description": "Discord Communication Interface",
     "Attributes": {
         "Enabled": false,
@@ -9,7 +9,7 @@
         "Type": "app",
         "Class": "kyne",
         "Id": "discordui",
-        "Name": "DiscordUI",
+        "Name": "DiscordFrontend",
         "Version": "1.0",
         "Distro": "Server"
     },
