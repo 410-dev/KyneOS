@@ -1,0 +1,19 @@
+{
+    "Bundle": "KyneOS:Service:1.0",
+    "DisplayName": "UserTelemetryDaemon",
+    "ProcessName": "UserTelemetryDaemon",
+    "Description": "User telemetry daemon",
+    "Attributes": {
+        "Enabled": false,
+        "Priority": 0,
+        "Type": "svc",
+        "Class": "kyne",
+        "Id": "user-telemetry-daemon",
+        "Name": "UserTelemetryDaemon",
+        "Version": "1.0",
+        "Distro": "Desktop"
+    },
+    "Runtime": {
+        "SupportedArchitecture": ["arm64", "amd64"]
+    }
+}
