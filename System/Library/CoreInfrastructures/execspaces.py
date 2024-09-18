@@ -6,6 +6,7 @@ import time
 import System.Library.Security.APIAccessControls as APIAccessControls
 
 
+
 class KernelSpace:
     loaded: dict[str, dict] = {
         # "ext.fs.kfs": {
@@ -155,7 +156,6 @@ class KernelSpace:
             KernelSpace._kernelUser = User(dso)
 
 
-from System.Library.CoreInfrastructures.Objects.User import User
 class UserSpace:
 
     localLogon: dict[str, dict] = {
@@ -214,7 +214,7 @@ class UserSpace:
         return func(*args, **kwargs)
 
     @staticmethod
-    def logon(user: User):
+    def logon(user: "User"):
         UserSpace.localLogon[f"{user.email}:{user.home}"] = {
             "user": user,
             "logonTime": time.time(),
@@ -222,7 +222,7 @@ class UserSpace:
         }
 
     @staticmethod
-    def logoff(user: User):
+    def logoff(user: "User"):
         UserSpace.localLogon.pop(f"{user.email}:{user.home}")
 
     @staticmethod
@@ -235,17 +235,17 @@ class UserSpace:
         return UserSpace.pid
 
     @staticmethod
-    def startService(ownerUser: User, bundlePath: str, args: list, restartService: bool = False):
+    def startService(ownerUser: "User", bundlePath: str, args: list, restartService: bool = False):
         UserSpace.openBundle(ownerUser, True, bundlePath, args, None)
 
     @staticmethod
-    def openBundle(ownerUser: User, usingAsync: bool, bundlePath: str, args: list, cwd: str|None) -> int:
+    def openBundle(ownerUser: "User", usingAsync: bool, bundlePath: str, args: list, cwd: str|None) -> int:
         from System.Library.CoreInfrastructures.Objects.Bundle import Bundle
         bundle = Bundle(bundlePath)
         return UserSpace.openExecutable(ownerUser, usingAsync, bundle.getExecutable(), args, cwd)
 
     @staticmethod
-    def openExecutable(ownerUser: User, usingAsync: bool, executablePath: str, args: list, cwd: str|None) -> int:
+    def openExecutable(ownerUser: "User", usingAsync: bool, executablePath: str, args: list, cwd: str|None) -> int:
         from System.Library.CoreInfrastructures.Objects.Process import Process
         processObj = Process(executablePath, executablePath, args, ownerUser)
         if cwd is not None:
