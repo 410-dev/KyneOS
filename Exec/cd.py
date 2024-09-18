@@ -11,8 +11,20 @@ def main(args: list, process: Process):
         return
     if directory.startswith("/"):
         nextDir = directory
+    elif directory.startswith("~"):
+        nextDir = f"{parentProcess.ownerUser.home}/{directory[1:]}"
     else:
         nextDir = f"{parentProcess.cwd}/{directory}"
+
+    # Convert nextdir to correct path - remove any ../ or ./ from the path
+    nextDirComponents = nextDir.split("/")
+    nextDir = []
+    for component in nextDirComponents:
+        if component == "..":
+            nextDir.pop()
+        elif component != ".":
+            nextDir.append(component)
+    nextDir = "/".join(nextDir)
 
     if fs.isFile(nextDir):
         stdio.println(f"{directory}: Not a directory")
