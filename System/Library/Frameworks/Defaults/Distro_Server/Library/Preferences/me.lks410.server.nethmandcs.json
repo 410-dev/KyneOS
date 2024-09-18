@@ -1,0 +1,8 @@
+{
+    "Enabled": false,
+    "Port": 53778,
+    "UsingWhitelist": false,
+    "Whitelist": [],
+    "UsingBlacklist": false,
+    "Blacklist": []
+}

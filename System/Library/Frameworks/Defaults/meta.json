@@ -1,0 +1,18 @@
+{
+    "Bundle": "KyneOS:Framework:1.0",
+    "DisplayName": "Defaults",
+    "ProcessName": "Defaults",
+    "Description": "Defaults Framework",
+    "Attributes": {
+        "Priority": 0,
+        "Type": "svc",
+        "Class": "kyne",
+        "Id": "defaults",
+        "Name": "Defaults",
+        "Version": "1.0",
+        "Distro": "Universal"
+    },
+    "Runtime": {
+        "SupportedArchitecture": ["arm64", "amd64"]
+    }
+}
