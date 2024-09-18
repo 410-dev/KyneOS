@@ -126,4 +126,9 @@ def rename(src: str, dest: str) -> bool:
     os.rename(src, dest)
     return True
 
-
+def accessible(path: str, mode: str, process) -> bool:
+    if not APIAccessControls.isAccessFromScope("System.Library.CoreInfrastructures.execspaces"):
+        raise Exception("Access denied.")
+    # path = os.path.abspath(f"{os.getcwd()}/{path}")
+    # return os.access(path, mode)
+    return True
