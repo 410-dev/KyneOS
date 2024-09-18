@@ -24,6 +24,25 @@ def interpretLines(lines: list[str], process: Process) -> int:
 
 
 def interpretParameters(commandComponents: list[str], process: Process) -> int:
+    if len(commandComponents) == 0:
+        return 0
+    if commandComponents[0].startswith("/") or commandComponents[0].startswith("."):
+        if fs.isFile(f"{commandComponents[0]}/main.py"):
+            if process.ownerUser.allowedToExecuteInPath(commandComponents[0]):
+                return UserSpace.openBundle(process.ownerUser, False, commandComponents[0], commandComponents, process.cwd)
+            else:
+                stdio.println(f"Permission denied: {commandComponents[0]}")
+                return 1
+        elif fs.isFile(f"{commandComponents[0]}.py"):
+            if process.ownerUser.allowedToExecuteInPath(commandComponents[0]):
+                return UserSpace.openExecutable(process.ownerUser, False, f"{commandComponents[0]}.py", commandComponents, process.cwd)
+            else:
+                stdio.println(f"Permission denied: {commandComponents[0]}")
+                return 1
+        else:
+            stdio.println(f"Command '{commandComponents[0]}' not found.")
+            return 1
+
     for path in paths(process):
         try:
             if fs.isFile(f"{path}/{commandComponents[0]}/main.py"):
