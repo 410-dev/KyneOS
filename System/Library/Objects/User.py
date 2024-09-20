@@ -86,5 +86,12 @@ class User:
         allowedToExecuteWithPathSpecified: bool = self.dsObject.getPolicyValue("UserAdministration.Exec.AllowedToExecuteWithPathSpecified", True)
         return allowedToExecuteWithPathSpecified or executablePath in self.getExecPaths()
 
+    def getPreferenceOf(self, preferenceName: str) -> dict:
+        if fs.exists(f"{self.home}/Library/Preferences/{preferenceName}.json"):
+            return json.loads(fs.reads(f"{self.home}/Library/Preferences/{preferenceName}.json"))
+        elif fs.exists(f"/Library/Preferences/{preferenceName}.json"):
+            return json.loads(fs.reads(f"/Library/Preferences/{preferenceName}.json"))
+        return {}
+
     def __str__(self):
         return f"User: {self.username} ({self.fullName})"
