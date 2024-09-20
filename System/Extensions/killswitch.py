@@ -17,14 +17,15 @@ def DECLARATION() -> dict:
 import sys
 from pynput import keyboard
 from System.Library.execspaces import KernelSpace
+import System.Library.kynekernel as kynekernel
 
-def killsys():
-    import sys
-    import os
-    currentPid = os.getpid()
-    if sys.platform == "win32":
-        os.system(f"taskkill /F /PID {currentPid}")
-    else:
-        os.system(f"kill -9 {currentPid}")
+# def killsys():
+#     import sys
+#     import os
+#     currentPid = os.getpid()
+#     if sys.platform == "win32":
+#         os.system(f"taskkill /F /PID {currentPid}")
+#     else:
+#         os.system(f"kill -9 {currentPid}")
 
-KernelSpace.syscall("drv.hardwareio.keyboard", "addKeySwitch", [[keyboard.Key.ctrl, keyboard.Key.esc]], lambda: killsys())
+KernelSpace.syscall("drv.hardwareio.keyboard", "addKeySwitch", [[keyboard.Key.ctrl, keyboard.Key.esc]], lambda: kynekernel.killsys())
