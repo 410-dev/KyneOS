@@ -1,0 +1,19 @@
+{
+    "Bundle": "KyneOS:Framework:1.0",
+    "DisplayName": "Associations Interpreter",
+    "ProcessName": "AssocInterpreter",
+    "Description": "Handles shexec url requests",
+    "Attributes": {
+        "Priority": 0,
+        "Type": "framework",
+        "Class": "kyne",
+        "Id": "associnterpreter",
+        "Name": "Defaults",
+        "Version": "1.0",
+        "Distro": "Universal",
+        "FrameworkAttributes": {}
+    },
+    "Runtime": {
+        "SupportedArchitecture": ["arm64", "amd64"]
+    }
+}
