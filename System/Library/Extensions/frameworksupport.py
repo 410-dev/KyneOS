@@ -1,3 +1,4 @@
+
 def DECLARATION() -> dict:
     return {
         "type": "ext",
@@ -31,3 +32,22 @@ def removeMemoryValue(frameworkId: str, key: str) -> None:
     if frameworkId in FRAMEWORK_MEMORY.mem:
         if key in FRAMEWORK_MEMORY.mem[frameworkId]:
             del FRAMEWORK_MEMORY.mem[frameworkId][key]
+
+
+def runFramework(frameworkPath: str, frameworkParameters: dict, parentProcess, doAsync: bool = False) -> any:
+    from System.Library.Objects.Process import Process
+    import System.fs as fs
+
+    # check if the bundle has framework executable
+    if not fs.isFile(f"{frameworkPath}/framework.py"):
+        raise Exception("Framework executable not found")
+    else:
+        frameworkPath = f"{frameworkPath}/framework.py"
+
+    frameworkProcess = Process(frameworkPath, frameworkPath, [], parentProcess.ownerUser, parentProcess)
+
+    if doAsync:
+        frameworkProcess.launchAsync(frameworkParameters)
+    else:
+        return frameworkProcess.launchSync(frameworkParameters)
+
