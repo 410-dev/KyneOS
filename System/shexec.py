@@ -58,6 +58,7 @@ def interpretParameters(commandComponents: list[str], process: Process) -> int:
 
 
 def splitStringBySpaceWhileConsideringEscapeAndQuotation(rawStringLine: str) -> list[str]:
+    rawStringLine = rawStringLine.strip()
     splitLine: list[str] = []
     currentString: str = ""
     inEscape: bool = False
