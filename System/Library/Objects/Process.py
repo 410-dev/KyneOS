@@ -176,7 +176,7 @@ class Process:
         try:
             UserSpace.registerProcess(self)
             self.isRunning = True
-            Journaling.record("INFO", f"Process {self.pid} started.")
+            Journaling.record("INFO", f"Process {self.pid} started synchronously: {self.executable}")
             exitData = self.module.main(args, self)
             exitCode = exitData
             if exitCode is None:
@@ -187,12 +187,12 @@ class Process:
         except Exception as e:
             import traceback
             traceback.print_exc()
-            Journaling.record("ERROR", f"Process terminated with exit code: {exitCode} - {e}")
+            Journaling.record("ERROR", f"Process [{self.pid}, {self.executable}] terminated with exit code: {exitCode} - {e}")
             return 1
 
     def processEnd(self, exitCode: int) -> None:
         self.isRunning = False
-        Journaling.record("INFO", f"Process terminated with exit code: {exitCode}")
+        Journaling.record("INFO", f"Process [{self.pid}] terminated with exit code: {exitCode} ({self.executable})")
         UserSpace.processes.pop(self.pid)
         # Add any additional cleanup or notification logic here
 
@@ -227,7 +227,7 @@ class Process:
         UserSpace.registerProcess(self)
         self.thread = threading.Thread(target=self._run_async_loop, args=(args, self))
         self.thread.start()
-        Journaling.record("INFO", f"Process {self.pid} started.")
+        Journaling.record("INFO", f"Process {self.pid} started asynchronously: {self.executable}")
 
         return self.pid
 
