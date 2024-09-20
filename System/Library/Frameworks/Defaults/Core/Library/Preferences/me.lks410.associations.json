@@ -1,26 +1,31 @@
 {
-    ".kip": {
+    "kip": {
         "assoc": "framework:///System/Library/Frameworks/Installer",
         "icon": "framework:///System/Library/Frameworks/Installer?resource=icon&encode=base64",
         "name": "KyneOS Installable Package",
         "description": "A package that can be installed using KyneOS built-in installer"
     },
-    ".kyimg": {
+    "kyimg": {
         "assoc": "framework:///System/Library/Frameworks/OSProfiler/Support/OSImageFlasher",
         "icon": "framework:///System/Library/Frameworks/OSProfiler/Support/OSImageFlasher?resource=icon&encode=base64",
         "name": "KyneOS Image",
         "description": "Installable image for KyneOS - used for updating the OS"
     },
-    ".urlassoc": {
+    "urlassoc": {
         "assoc": "framework:///System/Library/Frameworks/URLHandler",
         "icon": "framework:///System/Library/Frameworks/URLHandler?resource=icon&encode=base64",
         "name": "URL Backend",
         "description": "A URL backend file"
     },
-    ".sc": {
+    "sc": {
         "assoc": "framework:///System/Library/Frameworks/KyneLangV1",
         "icon": "framework:///System/Library/Frameworks/KyneLangV1?resource=icon&encode=base64",
         "name": "KyneLang Script",
         "description": "An executable script written in KyneLang"
+    },
+    "txt": {
+        "assoc": "shexec:///Exec/cat",
+        "name": "Text File",
+        "description": "A text file"
     }
 }
