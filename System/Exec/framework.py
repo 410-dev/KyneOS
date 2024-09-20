@@ -6,19 +6,53 @@ def main(args: list, process):
     # Second arg: Parameters in like this: abc=1234 def=5678
     args.pop(0)
     if len(args) < 1:
-        stdio.println("Usage: framework [frameworkfile] <args>")
+        stdio.println("Usage: framework [--silent] [frameworkfile] <args>")
+        stdio.println("       framework [--silent] [url form]")
         stdio.println("Example: framework /System/Library/Frameworks/FileKit arg1=123 arg2=456")
+        stdio.println("         framework --silent /System/Library/Frameworks/FileKit?arg1=123&arg2=456")
         return 1
 
+    silent: bool = False
+    if args[0] == "--silent":
+        args.pop(0)
+        silent = True
+
     frameworkFile: str = args.pop(0)
+    if "?" in frameworkFile:
+        frameworkFile, params = frameworkFile.split("?", 1)
+        args.extend(params.split("&"))
     try:
         castedParameters: dict = {}
         for parameter in args:
             key, value = parameter.split("=", 1)
             castedParameters[key] = value
-        output = framework.run(frameworkFile, castedParameters, process)
-        stdio.println(output)
+
+        # When resource is requested, return the resource data
+        if "resource" in castedParameters:
+            requestedResources: list[str] = castedParameters["resource"].split(",")
+            resourceData: dict = {}
+            try:
+                resourceData = framework.getFrameworkResource(frameworkFile, process, requestedResources)
+            except Exception as e:
+                stdio.println(f"Error: {e}")
+
+            if "encode" in castedParameters:
+                if castedParameters["encode"] == "base64":
+                    import base64
+                    for resource in resourceData:
+                        if isinstance(resourceData[resource], str):
+                            resourceData[resource] = base64.b64encode(resourceData[resource].encode()).decode()
+                        else:
+                            resourceData[resource] = base64.b64encode(resourceData[resource]).decode()
+
+            return resourceData
+
+        # If not asking for resource, run the framework
+        else:
+            output = framework.run(frameworkFile, castedParameters, process)
+            if not silent:
+                stdio.println(output)
+            return output
     except Exception as e:
         stdio.println(f"Error: {e}")
         return 1
-    return 0

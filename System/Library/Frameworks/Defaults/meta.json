@@ -10,7 +10,13 @@
         "Id": "defaults",
         "Name": "Defaults",
         "Version": "1.0",
-        "Distro": "Universal"
+        "Distro": "Universal",
+        "FrameworkAttributes": {
+            "ResourceLocks": [
+                "decryptionKey",
+                "hiddenIcon"
+            ]
+        }
     },
     "Runtime": {
         "SupportedArchitecture": ["arm64", "amd64"]

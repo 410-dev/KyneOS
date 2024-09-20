@@ -51,3 +51,33 @@ def runFramework(frameworkPath: str, frameworkParameters: dict, parentProcess, d
     else:
         return frameworkProcess.launchSync(frameworkParameters)
 
+def getFrameworkAttribute(frameworkPath: str, parentProcess) -> dict:
+    from System.Library.Objects.Bundle import Bundle
+    import System.fs as fs
+
+    if not fs.isFile(f"{frameworkPath}/meta.json"):
+        raise Exception("Framework meta not found")
+    else:
+        bundle = Bundle(f"{frameworkPath}")
+        if bundle.getAttributeOf("FrameworkAttributes"):
+            return bundle.getAttributeOf("FrameworkAttributes")
+        else:
+            return {}
+
+def getFrameworkResource(frameworkPath: str, parentProcess, resourceId: list[str]) -> any:
+    import System.fs as fs
+    attribute: dict = getFrameworkAttribute(frameworkPath, parentProcess)
+    resourceLocks: list[str] = []
+    if "ResourceLocks" in attribute:
+        resourceLocks = attribute["ResourceLocks"]
+    for resource in resourceId:
+        if resource in resourceLocks:
+            raise Exception(f"Cannot access resource {resource} in framework: {frameworkPath}")
+
+    resourceData: dict = {}
+    for resource in resourceId:
+        if not fs.isFile(f"{frameworkPath}/resources/{resource}"):
+            raise Exception(f"Resource {resource} not found in framework: {frameworkPath}")
+        else:
+            resourceData[resource] = fs.readb(f"{frameworkPath}/resources/{resource}")
+    return resourceData
