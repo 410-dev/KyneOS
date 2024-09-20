@@ -1,0 +1,26 @@
+{
+    ".kip": {
+        "assoc": "framework:///System/Library/Frameworks/Installer",
+        "icon": "framework:///System/Library/Frameworks/Installer?icon",
+        "name": "KyneOS Installable Package",
+        "description": "A package that can be installed using KyneOS built-in installer"
+    },
+    ".kyimg": {
+        "assoc": "framework:///System/Library/Frameworks/OSProfiler/Support/OSImageFlasher",
+        "icon": "framework:///System/Library/Frameworks/OSProfiler/Support/OSImageFlasher?icon",
+        "name": "KyneOS Image",
+        "description": "Installable image for KyneOS - used for updating the OS"
+    },
+    ".urlassoc": {
+        "assoc": "framework:///System/Library/Frameworks/URLHandler",
+        "icon": "framework:///System/Library/Frameworks/URLHandler?icon",
+        "name": "URL Backend",
+        "description": "A URL backend file"
+    },
+    ".sc": {
+        "assoc": "framework:///System/Library/Frameworks/KyneLangV1",
+        "icon": "framework:///System/Library/Frameworks/KyneLangV1?icon",
+        "name": "KyneLang Script",
+        "description": "An executable script written in KyneLang"
+    }
+}

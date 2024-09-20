@@ -1,0 +1,6 @@
+{
+    "http": "/System/Library/Frameworks/NetworkKit",
+    "https": "/System/Library/Frameworks/NetworkKit",
+    "file": "/System/Library/Frameworks/FileKit",
+    "framework": "/System/Exec/framework"
+}
