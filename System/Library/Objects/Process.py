@@ -17,7 +17,7 @@ from System.Library.execspaces import KernelSpace, UserSpace
 
 
 class Process:
-    def __init__(self, name: str, executable: str, arguments: list[str], ownerUser) -> None:
+    def __init__(self, name: str, executable: str, arguments: list[str], ownerUser, ownerProcess = None) -> None:
         from System.Library.Objects.User import User
         self.pid: int = -1
         self.name: str = name
@@ -29,7 +29,10 @@ class Process:
         self.arguments: list[str] = arguments
         self.ownerUser: User = ownerUser
         self.ownerProcess = None
-        self.ownerProcess: "Process" = self.getOwnerProcess()
+        if ownerProcess is None:
+            self.ownerProcess: "Process" = self.getOwnerProcess()
+        else:
+            self.ownerProcess: "Process" = ownerProcess
 
         self.module = None
         self.thread = None
@@ -174,18 +177,18 @@ class Process:
             UserSpace.registerProcess(self)
             self.isRunning = True
             Journaling.record("INFO", f"Process {self.pid} started.")
-            exitCode = self.module.main(args, self)
+            exitData = self.module.main(args, self)
+            exitCode = exitData
             if exitCode is None:
                 exitCode = 0
             self.processEnd(exitCode)
             self.isRunning = False
-            return exitCode
+            return exitData
         except Exception as e:
             import traceback
             traceback.print_exc()
             Journaling.record("ERROR", f"Process terminated with exit code: {exitCode} - {e}")
             return 1
-
 
     def processEnd(self, exitCode: int) -> None:
         self.isRunning = False
