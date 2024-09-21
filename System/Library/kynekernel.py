@@ -27,7 +27,7 @@ def jPrint(string: str, end: str = "\n"):
     timeElapsed: str = f'{(datetime.datetime.now().timestamp() - timeOfBoot):.4f}'
     string = f"[{timeElapsed}] {string}"
     if preloadInitialized:
-        stdio.printf(string, end=end)
+        stdio.printf(string, end=end, tty=1)
     else:
         print(string, end=end)
 
@@ -201,7 +201,12 @@ def init(args: list):
             jPrint(f"  Error: {loadedKernelServices}: {e}")
             jPrint("  KernelSpace failed to terminate the kernel services.")
 
-    for loadedKernelComponents in KernelSpace.loaded:
+    loadedComponents: dict = KernelSpace.loaded
+    references = list(loadedComponents.keys())
+    references.reverse()
+
+    for loadedKernelComponentsReference in references:
+        loadedKernelComponents = loadedKernelComponentsReference
         jPrint(f"Unloading: {loadedKernelComponents}")
         module = KernelSpace.loaded[loadedKernelComponents]["exec"]
         if hasattr(module, "terminate"):
