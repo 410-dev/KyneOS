@@ -19,8 +19,9 @@ def DECLARATION() -> dict:
         "priority": 1000
     }
 
-currentDisplayTTY = 1
 
+currentDisplayTTY = 1
+ttyForcedAt1 = False
 scanfQueue: dict[int, bool] = {}
 
 def switchTTY(tty: int, silent: bool = False):
@@ -28,6 +29,9 @@ def switchTTY(tty: int, silent: bool = False):
     currentDisplayTTY = tty
     from System.Library.execspaces import KernelSpace
     if "--enforce-singletty" in KernelSpace._bootArgs:
+        global ttyForcedAt1
+        ttyForcedAt1 = True
+        currentDisplayTTY = 1
         return
     if not fs.isFile(f"/tmp/tty{tty}.log"):
         fs.makeDir(f"/tmp/")
@@ -37,6 +41,9 @@ def switchTTY(tty: int, silent: bool = False):
         println(f"Switched to TTY {tty}", tty=tty, dontLeaveLog=True)
     if fs.isFile(f"/tmp/tty{tty}.log"):
         print(fs.reads(f"/tmp/tty{tty}.log"))
+
+def getCurrentTTY() -> int:
+    return currentDisplayTTY
 
 def scanf(tty: int = -1) -> str:
     global scanfQueue
@@ -51,7 +58,8 @@ def scanf(tty: int = -1) -> str:
 
 def println(content: str, end: str = "\n", tty: int = -1, dontLeaveLog: bool = False, enableTTYDetection: bool = True):
     global currentDisplayTTY
-    if tty == -1:
+    global ttyForcedAt1
+    if tty == -1 and not ttyForcedAt1:
         if enableTTYDetection:
             stack = inspect.stack()
             for frame_info in stack:
@@ -68,12 +76,11 @@ def println(content: str, end: str = "\n", tty: int = -1, dontLeaveLog: bool = F
         else:
             tty = currentDisplayTTY
 
-    if tty == -1:
+    if tty == -1 or ttyForcedAt1:
         tty = 1
 
     if tty == currentDisplayTTY:
         print(content, end=end)
-
 
     if not dontLeaveLog:
         fs.appends(f"/tmp/tty{tty}.log", content + end)
