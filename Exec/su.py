@@ -10,12 +10,14 @@ def main(args, process: Process):
         password = stdio.scanf()
         if process.ownerUser.escalatePrivilege(process.ownerUser.username, password):
             if process.ownerUser.isAdministrator():
-                stdio.println("Privilege escalated.")
+                return 0
             else:
                 stdio.println("Escalation failed.")
+                return 1
         else:
             stdio.println("Escalation failed.")
+            return 1
     else:
         process.ownerUser.restoreDefaultPrivilege()
-        stdio.println("Privilege restored.")
+        return 0
 
