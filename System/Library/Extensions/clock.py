@@ -1,3 +1,5 @@
+from datetime import datetime
+
 import System.Library.Security.APIAccessControls as APIAccessControls
 
 def DECLARATION() -> dict:
@@ -14,3 +16,9 @@ def DECLARATION() -> dict:
         "priority": 0
     }
 
+
+startupTime: int = round(datetime.now().timestamp())
+
+
+def getStartupTime() -> int:
+    return startupTime
