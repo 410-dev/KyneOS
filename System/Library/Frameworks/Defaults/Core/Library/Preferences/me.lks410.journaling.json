@@ -1,0 +1,6 @@
+{
+    "EnableDiskJournaling": true,
+    "EnableStdOutJournaling": false,
+    "DisableMemoryJournaling": false,
+    "MemoryJournalingMaxEntryPerProcess": 8192
+}
