@@ -7,10 +7,10 @@ import time
 import os
 import inspect
 import System.fs as fs
-import System.Library.journaling as Journaling
-from typing import Any, Callable
+import System.journaling as Journaling
 
-from System.Library.execspaces import KernelSpace, UserSpace
+from typing import Any
+from System.Library.execspaces import UserSpace
 
 
 # from system.kernel.v100.modules import process as process_module
