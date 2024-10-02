@@ -12,6 +12,10 @@ def main(args: list, process: Process):
     else:
         path = f"{process.cwd}/{file}"
 
+    if not fs.isFile(path):
+        stdio.println(f"Error: {file} not found.")
+        return 1
+
     if fs.accessible(path, "r", process):
         content = fs.reads(path)
         stdio.println(content)
