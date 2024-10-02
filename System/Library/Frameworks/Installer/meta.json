@@ -1,0 +1,26 @@
+{
+    "Bundle": "KyneOS:Framework:1.0",
+    "DisplayName": "KynePackageInstaller",
+    "ProcessName": "KynePackageInstaller",
+    "Description": "KyneOS proprietary package installer",
+    "Attributes": {
+        "Priority": 0,
+        "Type": "framework",
+        "Class": "kyne",
+        "Id": "installer",
+        "Name": "KynePackageInstaller",
+        "Version": "1.0",
+        "Distro": "Universal",
+        "ExplicitCompatibility": {
+            "SDK": ["1.0", "1.1", "1.2"],
+            "API": ["1.0", "1.1", "1.2"],
+            "OSVersion": "1.0.0",
+            "OSBuild": "1300",
+            "OSName": "KyneOS",
+            "OSDistro": "Automatic"
+        }
+    },
+    "Runtime": {
+        "SupportedArchitecture": ["arm64", "amd64"]
+    }
+}
