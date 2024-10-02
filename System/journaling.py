@@ -85,7 +85,8 @@ def record(state: str, text: str):
     while frame:
         frame_info = inspect.getframeinfo(frame)
         callerFunctionTraces.append(frame_info.function)
-        if 'System/Library/Objects/Process.py' in frame_info.filename:
+        filename = frame_info.filename.replace("\\", "/")
+        if 'System/Library/Objects/Process.py' in filename:
             # Now check for any instance of the Process class in the local variables
             local_vars = frame.f_locals
             process = local_vars.get('self')  # This should get process object
@@ -96,7 +97,11 @@ def record(state: str, text: str):
             frame = frame.f_back
 
     sTime: str = f"{KernelSpace.syscall("ext.time.clock", "getStartupTime")}"
-    execPath = process.executable
+
+    if process is not None:
+        execPath = process.executable
+    else:
+        execPath = frame_info.filename
 
     # If caller is a bundle format, get the bundle path
     execParent = "/".join(execPath.split("/")[:-1])
@@ -110,7 +115,7 @@ def record(state: str, text: str):
 
     if process is None or process.ownerUser is None:
         prefDat: dict = {
-            "EnableStdoutJournaling": True,
+            "EnableStdoutJournaling": True if "-v" in KernelSpace.getBootArgs() else False,
             "EnableDiskJournaling": False,
             "DisableMemoryJournaling": False
         }
