@@ -2,12 +2,17 @@ from System.Library.Objects.Process import Process
 from System.Library.execspaces import UserSpace
 import System.stdio as stdio
 import System.fs as fs
+import System.task as task
 
 def paths(process: Process) -> list[str]:
     return process.ownerUser.getExecPaths()
 
 
-def interpretLine(line: str, process: Process) -> int:
+def interpretLine(line: str, process: Process = None) -> int:
+    if process is None:
+        process = task.getProcess()
+        if process is None:
+            return 1
     if "; " in line:
         lines: list[str] = line.split("; ")
         return interpretLines(lines, process)
@@ -15,7 +20,11 @@ def interpretLine(line: str, process: Process) -> int:
     return interpretParameters(commandComponents, process)
 
 
-def interpretLines(lines: list[str], process: Process) -> int:
+def interpretLines(lines: list[str], process: Process = None) -> int:
+    if process is None:
+        process = task.getProcess()
+        if process is None:
+            return 1
     for line in lines:
         exitCode: int = interpretLine(line, process)
         if exitCode != 0:
@@ -23,9 +32,13 @@ def interpretLines(lines: list[str], process: Process) -> int:
     return 0
 
 
-def interpretParameters(commandComponents: list[str], process: Process) -> int:
+def interpretParameters(commandComponents: list[str], process: Process = None) -> int:
     if len(commandComponents) == 0:
         return 0
+    if process is None:
+        process = task.getProcess()
+        if process is None:
+            return 1
     if commandComponents[0].startswith("/") or commandComponents[0].startswith("."):
         if fs.isFile(f"{commandComponents[0]}/main.py"):
             if process.ownerUser.allowedToExecuteInPath(commandComponents[0]):
