@@ -7,6 +7,7 @@ from System.Library.execspaces import KernelSpace
 
 class User:
     def __init__(self, dsObject: DSObject|None, path: str = None):
+        self.tempPaths = []
         if dsObject is None and path is None:
             raise ValueError("Either dsObject or path must be provided")
         if path is not None:
@@ -56,6 +57,14 @@ class User:
         for directory in requiredDirStruct:
             fs.makeDir(f"{self.home}{directory}")
 
+    def addTemporaryPaths(self, paths: list[str]):
+        if not self.isAdministrator():
+            return
+
+        for path in paths:
+            if path not in self.tempPaths:
+                self.tempPaths.append(path)
+
     def getExecPaths(self):
         paths: list[str] = []
 
@@ -79,6 +88,9 @@ class User:
             envPath = UserSpace.env(self.email, "PATH")
             if envPath:
                 paths.extend(envPath.split(":"))
+
+            if self.tempPaths and self.isAdministrator():
+                paths.extend(self.tempPaths)
 
         return paths
 
