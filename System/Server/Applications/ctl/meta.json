@@ -1,0 +1,18 @@
+{
+    "Bundle": "KyneOS:Application:1.0",
+    "DisplayName": "Server Control Interface",
+    "ProcessName": "serverctl",
+    "Description": "",
+    "Attributes": {
+        "Priority": 500,
+        "Type": "app",
+        "Class": "kyne",
+        "Id": "serverctl",
+        "Name": "Serverctl",
+        "Version": "1.0",
+        "Distro": "Server"
+    },
+    "Runtime": {
+        "SupportedArchitecture": ["arm64", "amd64"]
+    }
+}

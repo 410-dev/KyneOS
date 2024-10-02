@@ -1,0 +1,71 @@
+{
+    "service": {
+        "ApacheTomcat": {
+            "description": "Apache Tomcat is an open-source implementation of the Java Servlet, JavaServer Pages, Java Expression Language and WebSocket technologies.",
+            "8.5.95": "https://xxx"
+        },
+
+        "ApacheWebServer": {
+            "description": "The Apache HTTP Server Project is an effort to develop and maintain an open-source HTTP server for modern operating systems including UNIX and Windows.",
+            "2.4.39": "https://xxx"
+        },
+
+        "DiscordFrontend": {
+            "description": "Discord Communication Interface",
+            "1.0": "https://xxx"
+        },
+
+        "DynamicFlask": {
+            "description": "Dynamic Flask is a dynamic web server that can be used to host web applications.",
+            "1.0": "https://xxx",
+            "installation": {
+                "1.0": [
+                    "DOWNLOAD -> {PACKAGE_URL} -> /Library/etc/Server/packages/DynamicFlask-1.0.tar.gz",
+                    "UNTAR -> /Library/etc/Server/packages/DynamicFlask-1.0.tar.gz -> /Library/etc/Server/packages/DynamicFlask-1.0",
+                    "COPY -> /Library/etc/Server/packages/DynamicFlask-1.0 -> /Library/Server/Services",
+                    "REMOVE -> /Library/Server/Services/DynamicFlask",
+                    "RENAME -> /Library/Server/Services/DynamicFlask-1.0 -> /Library/Server/Services/DynamicFlask",
+                    "REMOVE -> /Library/etc/Server/packages/DynamicFlask-1.0.tar.gz",
+                    "REMOVE -> /Library/etc/Server/packages/DynamicFlask-1.0",
+                    "SHEXEC -> /Library/Server/Services/DynamicFlask/kyneapi/configure install",
+                    "IGNORE_ERROR -> SHEXEC -> echo Install was successful."
+                ]
+            }
+        },
+
+        "DynamicFlaskX": {
+            "description": "Dynamic FlaskX is a dynamic web server that can be used to host web applications.",
+            "1.0": "https://xxx"
+        },
+
+        "FTPHost": {
+            "description": "FTPHost is a file transfer protocol server that can be used to transfer files between systems.",
+            "1.0": "https://xxx"
+        },
+
+        "LetsEncryptSSL": {
+            "description": "LetsEncryptSSL is a free, automated, and open certificate authority that can be used to obtain SSL certificates.",
+            "1.0": "https://xxx"
+        },
+
+        "NethManDCS": {
+            "description": "NethMan",
+            "1.0": "builtin"
+        },
+
+        "NodeBackend": {
+            "description": "Node Backend",
+            "1.0": "https://xxx"
+        },
+
+        "SambaShare": {
+            "description": "Samba Share",
+            "1.0": "https://xxx"
+        },
+
+        "WirelessRouterHost": {
+            "description": "Wireless Router Host",
+            "1.0": "https://xxx"
+        }
+    }
+}
