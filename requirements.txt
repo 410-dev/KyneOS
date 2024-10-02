@@ -3,3 +3,6 @@ pycryptodomex
 requests
 bcrypt
 pynput
+
+# Server infrastructures
+flask
