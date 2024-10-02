@@ -43,7 +43,12 @@ def switchTTY(tty: int, silent: bool = False):
         print(fs.reads(f"/tmp/tty{tty}.log"))
 
 def getCurrentTTY() -> int:
-    return currentDisplayTTY
+    return currentDisplayTTY if not ttyForcedAt1 else 1
+
+def getTTYLog(tty: int) -> str:
+    if not fs.isFile(f"/tmp/tty{tty}.log"):
+        return ""
+    return fs.reads(f"/tmp/tty{tty}.log")
 
 def scanf(tty: int = -1) -> str:
     global scanfQueue
