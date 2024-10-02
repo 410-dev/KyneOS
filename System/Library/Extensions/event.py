@@ -29,7 +29,7 @@ def updateSysCache():
 
     locations: list[str] = [
         "/System/Events",
-        "/System/ServerInfrastructures/Events",
+        "/System/Server/Events",
         "/Library/Events",
         "/Library/Server/Events"
     ]
