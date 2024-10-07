@@ -51,5 +51,8 @@ class Bundle:
             return self.attributes[key]
         return None
 
+    def getAttributes(self):
+        return self.attributes
+
     def getExecutable(self):
         return f"{self.path}/main.py"
