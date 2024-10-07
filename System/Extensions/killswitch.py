@@ -16,7 +16,7 @@ def DECLARATION() -> dict:
 
 import sys
 from pynput import keyboard
-from System.Library.execspaces import KernelSpace
+import System.syscall as KernelSpace
 import System.Library.kynekernel as kynekernel
 
 # def killsys():
