@@ -1,0 +1,12 @@
+{
+    "manifest": "Manifest for NanoPyOS Backend on KyneOS installation",
+    "profile": {
+        "kernel": "1.0",
+        "build": "240604.indev-stable.1"
+    },
+    "install": {
+        "package": "file:///System/Library/Frameworks/NanoPyOSBackend/resources/package.tar",
+        "isFullPackage": true,
+        "validation": "SHA256=0000000000"
+    }
+}
