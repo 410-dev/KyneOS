@@ -1,5 +1,4 @@
-from System.Library.execspaces import KernelSpace
-
+import System.url as url
 import System.stdio as stdio
 
 def main(args: list[str], process):
@@ -17,6 +16,6 @@ def main(args: list[str], process):
         stdio.println(f"Error: No association found for {fileExt}")
         return 1
 
-    url = f"{association}?file={file}&args={','.join(args)}"
+    newURL = f"{association}?file={file}&args={','.join(args)}"
+    return url.retrieve(newURL, process)
 
-    return KernelSpace.syscall("ext.sys.urlcalls", "call", url, process)
