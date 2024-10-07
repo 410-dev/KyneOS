@@ -1,0 +1,18 @@
+// Mapping ID is generated as following rule:
+//First 6 digits means the version of compiler=010000 means 01.00.00 version
+//Last 6 digits means the unique name of function=000000 is a unique name
+
+
+compatible=010000E8B9EE
+copy_payload=0100002D7E14
+delete=010000BD55AD
+write=0100009C2F38
+append=010000FBAB92
+read=010000D64B35
+rename=0100005784B8
+stdout=010000A68DFE
+stdin=010000A865B9
+require_admin=010000554FDB
+shell_execute=010000A42D64
+klang_execute=010000113112
+default_installation_message=0100001C3191
