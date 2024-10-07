@@ -1,0 +1,40 @@
+// Instructions available
+// COMPATIBLE (enforce)
+// COPY-PAYLOAD payload-source -> destination
+// DELETE target
+// WRITE target <- content
+// APPEND target <- content
+// READ memory <- target
+// RENAME source -> target
+// STDOUT message
+// STDIN memory <- message
+// REQUIRE-ADMIN
+// SHELL-EXECUTE command
+// KLANG-EXECUTE command
+// DEFAULT-INSTALLATION-MESSAGE <ID>
+
+
+// Installation Example Script
+
+// Check compatibility
+default-installation-message compatibility-check
+compatible Installer SDK 1.0 enforce
+compatible OSProfiler SDK 1.0 enforce
+compatible OSProfiler API 1.0 enforce
+compatible OSProfiler OSVersion 1.0.0
+
+print System is eligible for installation.
+
+// Upgrade to administrator privilege
+default-installation-message privilege-escalation
+require-admin
+
+// At this point, running as administrator
+default-installation-message
+input _ <- Press return key to continue...
+
+// Copy payload
+copy-payload /System -> /System
+
+// Update distro
+shell-execute capture-output installmedia-record run textutitl /System/Library/
