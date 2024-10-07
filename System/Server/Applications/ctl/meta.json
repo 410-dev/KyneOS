@@ -4,7 +4,6 @@
     "ProcessName": "serverctl",
     "Description": "",
     "Attributes": {
-        "Priority": 500,
         "Type": "app",
         "Class": "kyne",
         "Id": "serverctl",
