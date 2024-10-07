@@ -1,0 +1,18 @@
+{
+    "Bundle": "KyneOS:Framework:1.0",
+    "DisplayName": "FileKit",
+    "ProcessName": "FileKit",
+    "Description": "KyneOS url based file system framework",
+    "Attributes": {
+        "Priority": 0,
+        "Type": "framework",
+        "Class": "kyne",
+        "Id": "filekit",
+        "Name": "FileKit",
+        "Version": "1.0",
+        "Distro": "Universal"
+    },
+    "Runtime": {
+        "SupportedArchitecture": ["arm64", "amd64"]
+    }
+}
