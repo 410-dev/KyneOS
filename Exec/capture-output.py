@@ -41,6 +41,28 @@ def main(args: list, process):
         fs.makeDir("/tmp/capture-output")
         fs.writes(f"/tmp/capture-output/{memory_name}.txt", output)
 
+    elif args[1] == "run-silently":
+        if command is None:
+            stdio.println("Usage: capture-output <memory name> run-silently <command>")
+            return
+
+        # Start capturing tty logs
+        KernelSpace.syscall("drv.io.tty", "flushCapture", -1)
+        KernelSpace.syscall("drv.io.tty", "startCapture", -1)
+
+        # Run command
+        shexec.interpretParameters(command)
+
+        # Stop capturing tty logs
+        KernelSpace.syscall("drv.io.tty", "stopCapture", -1)
+
+        # Get captured logs
+        output = KernelSpace.syscall("drv.io.tty", "getCapture", -1)
+        KernelSpace.syscall("drv.io.tty", "flushCapture", -1)
+
+        fs.makeDir("/tmp/capture-output")
+        fs.writes(f"/tmp/capture-output/{memory_name}.txt", output)
+
     elif args[1] == "get":
         if not fs.exists(f"/tmp/capture-output/{memory_name}.txt"):
             stdio.println("No output captured for this memory name.")

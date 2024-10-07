@@ -23,6 +23,35 @@ def DECLARATION() -> dict:
 currentDisplayTTY = 1
 ttyForcedAt1 = False
 scanfQueue: dict[int, bool] = {}
+capturingTTY: set[int] = set()
+captures = {}
+
+def startCapture(tty: int):
+    global capturingTTY
+    if tty == -1:
+        tty = currentDisplayTTY
+    capturingTTY.add(tty)
+
+def stopCapture(tty: int):
+    global capturingTTY
+    if tty == -1:
+        tty = currentDisplayTTY
+    capturingTTY.remove(tty)
+
+def getCapture(index: int) -> str:
+    global captures
+    if index == -1:
+        index = currentDisplayTTY
+    if index not in captures:
+        return ""
+    return captures[index]
+
+def flushCapture(index: int):
+    global captures
+    if index == -1:
+        index = currentDisplayTTY
+    if index in captures:
+        del captures[index]
 
 def switchTTY(tty: int, silent: bool = False):
     global currentDisplayTTY
@@ -64,6 +93,8 @@ def scanf(tty: int = -1) -> str:
 def println(content: str, end: str = "\n", tty: int = -1, dontLeaveLog: bool = False, enableTTYDetection: bool = True):
     global currentDisplayTTY
     global ttyForcedAt1
+    global capturingTTY
+    global captures
     if tty == -1 and not ttyForcedAt1:
         if enableTTYDetection:
             stack = inspect.stack()
@@ -84,8 +115,13 @@ def println(content: str, end: str = "\n", tty: int = -1, dontLeaveLog: bool = F
     if tty == -1 or ttyForcedAt1:
         tty = 1
 
-    if tty == currentDisplayTTY:
+    if tty == currentDisplayTTY and currentDisplayTTY not in capturingTTY:
         print(content, end=end)
 
-    if not dontLeaveLog:
+    if not dontLeaveLog and tty not in capturingTTY:
         fs.appends(f"/tmp/tty{tty}.log", content + end)
+
+    if tty in capturingTTY:
+        if tty not in captures:
+            captures[tty] = ""
+        captures[tty] += content + end
