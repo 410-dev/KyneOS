@@ -18,10 +18,15 @@ def call(url: str, process) -> any:
     urlAssociation: dict = process.ownerUser.getPreferenceOf("me.lks410.urlassoc")
     import System.shexec as shell
     if protocol in urlAssociation:
-        return shell.interpretParameters([
-            urlAssociation[protocol],
-            url
-        ], process)
+        if isinstance(urlAssociation[protocol], list):
+            cmds: list = urlAssociation[protocol]
+            cmds.append(url)
+            return shell.interpretParameters(cmds, process)
+        else:
+            return shell.interpretParameters([
+                urlAssociation[protocol],
+                url
+            ], process)
     else:
         raise Exception(f"Protocol '{protocol}' not found in URL Association")
     

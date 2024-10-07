@@ -23,10 +23,14 @@ def main(args: list, process):
         args.extend(params.split("&"))
     try:
         castedParameters: dict = {}
+        unidentifiedIdx: int = 0
         for parameter in args:
-            key, value = parameter.split("=", 1)
+            if "=" not in parameter:
+                key = f"unnamedParameter_{unidentifiedIdx}"
+                value = parameter
+            else:
+                key, value = parameter.split("=", 1)
             castedParameters[key] = value
-
         # When resource is requested, return the resource data
         if "resource" in castedParameters:
             requestedResources: list[str] = castedParameters["resource"].split(",")
